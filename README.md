@@ -32,7 +32,7 @@ bunyakovo_ryabtsevo/
 ### 1. Клонирование репозитория
 
 ```bash
-git clone https://github.com/your-username/bunyakovo_ryabtsevo.git
+git clone https://github.com/gushchinvadim/bunyakovo_ryabtsevo.git
 cd bunyakovo_ryabtsevo# bunyakovo_ryabtsevo
 # bunyakovo_ryabtsevo
 # bunyakovo_ryabtsevo
