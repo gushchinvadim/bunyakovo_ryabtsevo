@@ -1,0 +1,60 @@
+# ======================
+# PYTHON / DJANGO
+# ======================
+.venv/
+venv/
+env/
+ENV/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.sqlite3
+*.db
+
+# Django
+media/
+staticfiles/
+*.log
+local_settings.py
+
+# ======================
+# СЕКРЕТЫ (Глобально!)
+# ======================
+# Игнорировать .env в корне и в любых папках (backend/.env, frontend/.env)
+ backend/.env
+.env
+**/.env
+.env.local
+.env.*.local
+
+# ======================
+# FRONTEND
+# ======================
+node_modules/
+**/node_modules/
+dist/
+build/
+.npm
+.eslintcache
+.prettierignore
+
+# ======================
+# IDE и ОС
+# ======================
+# Игнорировать .idea везде (и в корне, и в backend/)
+.idea/
+**/.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# ======================
+# ПОЯСНЕНИЯ (Только комментарии!)
+# ======================
+# /static/ — исходники коммитим
+# /staticfiles/ — игнорируем
+# /media/ — игнорируем
+

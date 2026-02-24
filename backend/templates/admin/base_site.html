@@ -1,0 +1,121 @@
+{% extends "admin/base_site.html" %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+/* Стили для баннера в хедере */
+#moderation-banner {
+  background: linear-gradient(135deg, #fff3cd 0%, #ffe08a 100%);
+  border-left: 4px solid #ffc107;
+  padding: 8px 15px;
+  border-radius: 0 0 0 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-weight: 600;
+  color: #856404;
+  display: none;
+  margin: 10px 0 10px auto;
+  max-width: 350px;
+  font-size: 0.9rem;
+}
+#moderation-banner.show {
+  display: block;
+}
+#moderation-banner .title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: bold;
+  margin-bottom: 4px;
+  font-size: 0.95rem;
+}
+#moderation-banner .item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-left: 24px;
+  font-size: 0.9rem;
+}
+#moderation-banner .count {
+  font-weight: bold;
+  color: #856404;
+  min-width: 20px;
+  text-align: center;
+}
+</style>
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+  <a href="{% url 'admin:index' %}">
+    🏡 Админка Буняково-Рябцево
+  </a>
+</h1>
+
+<!-- Баннер интегрирован в хедер -->
+<div id="moderation-banner">
+  <div class="title">
+    <span>⚠️ Требуется внимание администратора:</span>
+  </div>
+  <div class="item">
+    <span>📝 Объявлений на модерации: <span class="count" id="ads-count">0</span></span>
+  </div>
+  <div class="item">
+    <span>👤 Новых пользователей: <span class="count" id="users-count">0</span></span>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const banner = document.getElementById('moderation-banner');
+  const adsCountEl = document.getElementById('ads-count');
+  const usersCountEl = document.getElementById('users-count');
+
+  function updateCounters() {
+    // Счётчик объявлений на модерации (включая отклонённые)
+    fetch('/api/admin/moderation-queue/')
+      .then(r => r.json())
+      .then(data => {
+        const count = data.count || 0;
+        console.log('📝 Объявлений на модерации:', count);
+        adsCountEl.textContent = count;
+        updateBannerVisibility();
+      })
+      .catch(e => {
+        console.error('❌ Ошибка загрузки объявлений:', e);
+        updateBannerVisibility();
+      });
+
+    // Счётчик не верифицированных пользователей
+    fetch('/api/admin/unverified-users/')
+      .then(r => r.json())
+      .then(data => {
+        const count = data.count || 0;
+        console.log('👤 Новых пользователей:', count);
+        usersCountEl.textContent = count;
+        updateBannerVisibility();
+      })
+      .catch(e => {
+        console.error('❌ Ошибка загрузки пользователей:', e);
+        updateBannerVisibility();
+      });
+  }
+
+  function updateBannerVisibility() {
+    const adsCount = parseInt(adsCountEl.textContent) || 0;
+    const usersCount = parseInt(usersCountEl.textContent) || 0;
+
+    if (adsCount > 0 || usersCount > 0) {
+      banner.classList.add('show');
+      console.log('✅ Баннер показан');
+    } else {
+      banner.classList.remove('show');
+      console.log('ℹ️ Баннер скрыт');
+    }
+  }
+
+  // Запускаем сразу и каждые 30 секунд
+  updateCounters();
+  setInterval(updateCounters, 30000);
+});
+</script>
+{% endblock %}
