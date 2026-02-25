@@ -1,20 +1,19 @@
 // src/js/utils/auth.js
+import { CONFIG } from "../../config.js";
+
 export const auth = {
   /**
    * Логин пользователя
    */
   async login(username, password) {
     try {
-      const response = await fetch(
-        "http://localhost:8000/api/accounts/login/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ username, password }),
+      const response = await fetch(`${CONFIG.API_URL}/accounts/login/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({ username, password }),
+      });
 
       if (!response.ok) {
         const error = await response.json();
@@ -40,16 +39,13 @@ export const auth = {
    */
   async register(userData) {
     try {
-      const response = await fetch(
-        "http://localhost:8000/api/accounts/register/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(userData),
+      const response = await fetch(`${CONFIG.API_URL}/accounts/register/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify(userData),
+      });
 
       if (!response.ok) {
         // Получаем детали ошибки из ответа
@@ -120,14 +116,11 @@ export const auth = {
    */
   async getProfile() {
     try {
-      const response = await fetch(
-        "http://localhost:8000/api/accounts/profile/",
-        {
-          headers: {
-            ...this.getAuthHeader(),
-          },
+      const response = await fetch(`${CONFIG.API_URL}/accounts/profile/`, {
+        headers: {
+          ...this.getAuthHeader(),
         },
-      );
+      });
 
       if (!response.ok) {
         throw new Error("Ошибка получения профиля");

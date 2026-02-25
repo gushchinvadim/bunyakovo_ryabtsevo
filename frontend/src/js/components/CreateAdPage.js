@@ -286,16 +286,13 @@ export function createCreateAdPage() {
         });
       }
 
-      const response = await fetch(
-        `${CONFIG.API_URL}/marketplace/ads/`,
-        {
-          method: "POST",
-          headers: {
-            ...auth.getAuthHeader(),
-          },
-          body: formData,
+      const response = await fetch(`${CONFIG.API_URL}/marketplace/ads/`, {
+        method: "POST",
+        headers: {
+          ...auth.getAuthHeader(),
         },
-      );
+        body: formData,
+      });
 
       if (!response.ok) {
         const error = await response.json();

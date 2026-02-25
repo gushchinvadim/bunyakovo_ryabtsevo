@@ -183,12 +183,9 @@ export async function createEditAdPage(adId) {
 
   // Загружаем данные объявления
   try {
-    const response = await fetch(
-      `${CONFIG.API_URL}/marketplace/ads/${adId}/`,
-      {
-        headers: auth.getAuthHeader(),
-      },
-    );
+    const response = await fetch(`${CONFIG.API_URL}/marketplace/ads/${adId}/`, {
+      headers: auth.getAuthHeader(),
+    });
 
     if (!response.ok) {
       throw new Error(

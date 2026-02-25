@@ -87,7 +87,7 @@ export function createLoginPage() {
       // Перенаправляем на барахолку
       setTimeout(() => {
         window.location.href = "/marketplace";
-      }, 1000);
+      }, 2000);
     } catch (error) {
       showMessage(error.message || "Ошибка входа", "error");
     }
