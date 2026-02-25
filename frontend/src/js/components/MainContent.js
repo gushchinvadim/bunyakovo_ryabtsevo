@@ -1,4 +1,5 @@
 // src/js/components/MainContent.js
+import { CONFIG } from "../../config.js";
 
 export function createMainContent() {
   const main = document.createElement("main");
@@ -99,9 +100,8 @@ export function createMainContent() {
         </div>
         <div class="card-content">
           <ul class="useful-links">
-          <ul class="useful-links">
             <li><span class="link-icon">🚕</span> <a href="https://taxi.yandex.ru/" target="_blank" rel="noopener noreferrer">Заказ такси</a></li>
-            <li><span class="link-icon">🚆</span> <a href="https://rasp.yandex.ru/all-transport/vostryakovo-platform--moscow-paveletskaya" target="_blank" rel="noopener noreferrer">Электрички в Москву</a></li>
+            <li><span class="link-icon">🚆</span> <a href="https://rasp.yandex.ru/all-transport/vostryakovo-platform--moscow-paveletskaya/" target="_blank" rel="noopener noreferrer">Электрички в Москву</a></li>
             <li><span class="link-icon">🚆</span> <a href="https://rasp.yandex.ru/all-transport/moscow-paveletskaya--vostryakovo-platform" target="_blank" rel="noopener noreferrer">Электрички из Москвы</a></li>
             <li><span class="link-icon">🏛️</span> <a href="https://domod.ru/about/territorial_control/" target="_blank" rel="noopener noreferrer">Администрация Домодедово</a></li>
             <li><span class="link-icon">🍕</span> <a href="https://alanca.ru" target="_blank" rel="noopener noreferrer">Заказ еды</a></li>
@@ -126,7 +126,7 @@ export function createMainContent() {
 async function loadImportantInfo(container) {
   try {
     const response = await fetch(
-      "http://localhost:8000/api/community/news-items/important/",
+      `${CONFIG.API_URL}/community/news-items/important/`,
     );
 
     if (!response.ok) {
@@ -159,7 +159,7 @@ async function loadImportantInfo(container) {
 async function loadNews(container) {
   try {
     const response = await fetch(
-      "http://localhost:8000/api/community/news-items/news/",
+      `${CONFIG.API_URL}/community/news-items/news/`,
     );
 
     if (!response.ok) {
@@ -221,9 +221,7 @@ function createNewsItem(item, type) {
 // Загрузка полезных телефонов
 async function loadUsefulPhones(container) {
   try {
-    const response = await fetch(
-      "http://localhost:8000/api/community/useful-phones/",
-    );
+    const response = await fetch(`${CONFIG.API_URL}/community/useful-phones/`);
 
     if (!response.ok) {
       throw new Error("Ошибка загрузки телефонов");
@@ -305,204 +303,3 @@ function createPhonesHTML(phones) {
 
   return html;
 }
-
-//       <!-- Полезные ссылки -->
-//       <section class="card links-card">
-//         <div class="card-header">
-//           <h2 class="card-title">🔗 Полезные ссылки</h2>
-//           <div class="card-badge">Сервисы</div>
-//         </div>
-//         <div class="card-content">
-//           <ul class="useful-links">
-//             <li><span class="link-icon">🚕</span> <a href="https://taxi.yandex.ru/" target="_blank" rel="noopener noreferrer">Заказ такси</a></li>
-//             <li><span class="link-icon">🚆</span> <a href="https://rasp.yandex.ru/all-transport/vostryakovo-platform--moscow-paveletskaya" target="_blank" rel="noopener noreferrer">Электрички в Москву</a></li>
-//             <li><span class="link-icon">🚆</span> <a href="https://rasp.yandex.ru/all-transport/moscow-paveletskaya--vostryakovo-platform" target="_blank" rel="noopener noreferrer">Электрички из Москвы</a></li>
-//             <li><span class="link-icon">🏛️</span> <a href="https://domod.ru/about/territorial_control/" target="_blank" rel="noopener noreferrer">Администрация Домодедово</a></li>
-//             <li><span class="link-icon">🍕</span> <a href="https://alanca.ru" target="_blank" rel="noopener noreferrer">Заказ еды</a></li>
-//             <li><span class="link-icon">🔥</span> <a href="https://mosoblgaz.ru/payment/prices/?ysclid=mlvr20femk237889861" target="_blank" rel="noopener noreferrer">Газ тарифы</a></li>
-//             <li><span class="link-icon">🔌</span> <a href="https://www.mosenergosbyt.ru/individuals/tariffs-n-payments/tariffs-mo/?ysclid=mlvxv2pz3v528477528" target="_blank" rel="noopener noreferrer">Электричество тарифы</a></li>
-//           </ul>
-//         </div>
-//       </section>
-//     </div>
-//   `;
-
-//   // Загружаем контент после возврата компонента
-//   Promise.resolve().then(() => {
-//     loadImportantInfo(main.querySelector('.important-info-content'));
-//     loadNews(main.querySelector('.news-content'));
-//     loadUsefulPhones(main.querySelector('.useful-phones-content'));
-//   });
-
-//   return main;
-// }
-
-// async function loadImportantInfo(container) {
-//   try {
-//     const response = await fetch('http://localhost:8000/api/community/news-items/important/');
-
-//     if (!response.ok) {
-//       throw new Error('Ошибка загрузки важной информации');
-//     }
-
-//     const items = await response.json();
-
-//     if (items.length === 0) {
-//       container.innerHTML = `
-//         <div class="news-placeholder">
-//           <p>Нет важной информации для отображения</p>
-//         </div>
-//       `;
-//     } else {
-//       container.innerHTML = items.map(item => createNewsItem(item, 'important')).join('');
-//     }
-
-//   } catch (error) {
-//     console.error('Ошибка загрузки важной информации:', error);
-//     container.innerHTML = `
-//       <div class="news-placeholder error">
-//         <p>⚠️ Не удалось загрузить важную информацию</p>
-//       </div>
-//     `;
-//   }
-// }
-
-// async function loadNews(container) {
-//   try {
-//     const response = await fetch('http://localhost:8000/api/community/news-items/news/');
-
-//     if (!response.ok) {
-//       throw new Error('Ошибка загрузки новостей');
-//     }
-
-//     const items = await response.json();
-
-//     if (items.length === 0) {
-//       container.innerHTML = `
-//         <div class="news-placeholder">
-//           <p>Нет новостей для отображения</p>
-//           <p class="news-subtitle">Следите за обновлениями!</p>
-//         </div>
-//       `;
-//     } else {
-//       container.innerHTML = items.map(item => createNewsItem(item, 'news')).join('');
-//     }
-
-//   } catch (error) {
-//     console.error('Ошибка загрузки новостей:', error);
-//     container.innerHTML = `
-//       <div class="news-placeholder error">
-//         <p>📰 Не удалось загрузить новости</p>
-//       </div>
-//     `;
-//   }
-// }
-
-// function createNewsItem(item, type) {
-//   const date = item.published_at
-//     ? new Date(item.published_at).toLocaleDateString('ru-RU', {
-//         day: 'numeric',
-//         month: 'long',
-//         year: 'numeric'
-//       })
-//     : 'Дата не указана';
-
-//   // Ограничиваем длину текста для превью (150 символов)
-//   const preview = item.content.length > 150
-//     ? item.content.substring(0, 150) + '...'
-//     : item.content;
-
-//   return `
-//     <div class="news-item ${type}-item">
-//       <div class="news-item-header">
-//         <h3 class="news-item-title">${item.title}</h3>
-//         <span class="news-item-date">${date}</span>
-//       </div>
-//       <div class="news-item-content">
-//         <p>${preview}</p>
-//       </div>
-//     </div>
-//   `;
-// }
-
-// // Загрузка полезных телефонов
-// async function loadUsefulPhones(container) {
-//   try {
-//     const response = await fetch('http://localhost:8000/api/community/useful-phones/');
-
-//     if (!response.ok) {
-//       throw new Error('Ошибка загрузки телефонов');
-//     }
-
-//     const data = await response.json();
-//     const phones = data.results || data;
-
-//     if (phones.length === 0) {
-//       container.innerHTML = `
-//         <div class="phones-placeholder">
-//           <p>Нет полезных телефонов для отображения</p>
-//         </div>
-//       `;
-//     } else {
-//       container.innerHTML = createPhonesHTML(phones);
-//     }
-
-//   } catch (error) {
-//     console.error('Ошибка загрузки полезных телефонов:', error);
-//     container.innerHTML = `
-//       <div class="phones-placeholder error">
-//         <p>⚠️ Не удалось загрузить телефоны</p>
-//       </div>
-//     `;
-//   }
-// }
-
-// // Создание HTML для телефонов
-// function createPhonesHTML(phones) {
-//   // Группируем по категориям
-//   const categories = {
-//     'emergency': '🚨 Экстренные службы',
-//     'administration': '🏛️ Администрация',
-//     'medical': '🏥 Медицинские',
-//     'transport': '🚌 Транспорт',
-//     'utility': '💧 Коммунальные службы',
-//     'other': 'ℹ️ Другое'
-//   };
-
-//   let html = '';
-
-//   Object.entries(categories).forEach(([categoryKey, categoryName]) => {
-//     const categoryPhones = phones.filter(p => p.category === categoryKey);
-
-//     if (categoryPhones.length > 0) {
-//       html += `
-//         <div class="phones-category">
-//           <h3 class="category-title">${categoryName}</h3>
-//           <div class="phones-list">
-//       `;
-
-//       categoryPhones.forEach(phone => {
-//         const phoneHref = `tel:${phone.phone.replace(/\D/g, '')}`;
-
-//         html += `
-//           <div class="phone-item">
-//             <div class="phone-name">${phone.name}</div>
-//             <a href="${phoneHref}" class="phone-number contact-link">
-//               📞 ${phone.phone}
-//             </a>
-//             ${phone.description ? `
-//               <div class="phone-description">${phone.description}</div>
-//             ` : ''}
-//           </div>
-//         `;
-//       });
-
-//       html += `
-//           </div>
-//         </div>
-//       `;
-//     }
-//   });
-
-//   return html;
-// }

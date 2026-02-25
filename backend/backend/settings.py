@@ -256,7 +256,7 @@ else:
 # ======================
 # БЕЗОПАСНОСТЬ (Production)
 # ======================
-#
+
 if not DEBUG:
     # Принудительный HTTPS
     SECURE_SSL_REDIRECT = True

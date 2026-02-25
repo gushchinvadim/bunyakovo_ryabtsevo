@@ -56,22 +56,22 @@ const routes = {
 /**
  * Создаёт заглушку для страницы в разработке
  */
-function createPlaceholderPage(title, text) {
-  const el = document.createElement("div");
-  el.className = "placeholder-page";
-  el.innerHTML = `
-    <div class="page-header">
-      <h1>${title}</h1>
-    </div>
-    <div class="placeholder-content card">
-      <div class="card-content" style="text-align:center;padding:60px 20px">
-        <p style="font-size:1.3rem;color:#655130;margin-bottom:20px">${text}</p>
-        <p style="color:#888;font-style:italic">Страница находится в разработке</p>
-      </div>
-    </div>
-  `;
-  return el;
-}
+// function createPlaceholderPage(title, text) {
+//   const el = document.createElement("div");
+//   el.className = "placeholder-page";
+//   el.innerHTML = `
+//     <div class="page-header">
+//       <h1>${title}</h1>
+//     </div>
+//     <div class="placeholder-content card">
+//       <div class="card-content" style="text-align:center;padding:60px 20px">
+//         <p style="font-size:1.3rem;color:#655130;margin-bottom:20px">${text}</p>
+//         <p style="color:#888;font-style:italic">Страница находится в разработке</p>
+//       </div>
+//     </div>
+//   `;
+//   return el;
+// }
 
 /**
  * Создаёт страницу ошибки 404
@@ -239,7 +239,7 @@ document.addEventListener("click", (e) => {
 /**
  * Поддержка кнопок "назад/вперёд" в браузере
  */
-window.addEventListener("popstate", (e) => {
+window.addEventListener("popstate", () => {
   const path = window.location.pathname;
   navigateTo(path);
 });

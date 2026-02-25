@@ -1,4 +1,5 @@
 // src/js/components/ChurchPage.js
+import { CONFIG } from "../../config.js";
 
 export function createChurchPage() {
   const page = document.createElement("div");
@@ -83,7 +84,7 @@ export function createChurchPage() {
 // Загрузка информации о батюшке
 async function loadPriestInfo(container) {
   try {
-    const response = await fetch("http://localhost:8000/api/church/priests/");
+    const response = await fetch(`${CONFIG.API_URL}/church/priests/`);
 
     if (!response.ok) {
       throw new Error("Ошибка загрузки информации о батюшке");
@@ -121,7 +122,7 @@ async function loadPriestInfo(container) {
 // Загрузка расписания богослужений
 async function loadSchedule(container) {
   try {
-    const response = await fetch("http://localhost:8000/api/church/schedule/");
+    const response = await fetch(`${CONFIG.API_URL}/church/schedule/`);
 
     if (!response.ok) {
       throw new Error("Ошибка загрузки расписания");
@@ -153,9 +154,7 @@ async function loadSchedule(container) {
 // Загрузка объявлений от батюшки
 async function loadAnnouncements(container) {
   try {
-    const response = await fetch(
-      "http://localhost:8000/api/church/announcements/",
-    );
+    const response = await fetch(`${CONFIG.API_URL}/church/announcements/`);
 
     if (!response.ok) {
       throw new Error("Ошибка загрузки объявлений");
@@ -189,12 +188,12 @@ async function loadAnnouncements(container) {
 // Загрузка галереи
 async function loadGallery(container, mediaType = "all") {
   try {
-    let url = "http://localhost:8000/api/church/media/";
+    let url = CONFIG.API_URL + "/church/media/";
 
     if (mediaType === "photo") {
-      url = "http://localhost:8000/api/church/media/photos/";
+      url = CONFIG.API_URL + "/church/media/photos/";
     } else if (mediaType === "video") {
-      url = "http://localhost:8000/api/church/media/videos/";
+      url = CONFIG.API_URL + "/church/media/videos/";
     }
 
     const response = await fetch(url);

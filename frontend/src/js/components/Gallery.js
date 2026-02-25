@@ -1,3 +1,5 @@
+import { CONFIG } from "../../config.js";
+
 export async function createGalleryPage() {
   const page = document.createElement("div");
   page.className = "gallery-page";
@@ -152,7 +154,7 @@ export async function createGalleryPage() {
 
   // Загружаем медиа с бэкенда
   try {
-    const response = await fetch("http://localhost:8000/api/community/media/");
+    const response = await fetch(`${CONFIG.API_URL}/community/media/`);
 
     if (!response.ok) {
       throw new Error("Ошибка загрузки данных");
@@ -184,86 +186,6 @@ export async function createGalleryPage() {
   }
 
   return page;
-}
-
-// Создание карточки медиа для галереи "О нас"
-function createMediaCard(media) {
-  const date = media.uploaded_at
-    ? new Date(media.uploaded_at).toLocaleDateString("ru-RU", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      })
-    : "Дата не указана";
-
-  if (media.media_type === "photo") {
-    return `
-      <div class="gallery-item photo-item">
-        <div class="gallery-item-inner">
-          <img src="${media.file_url}" alt="${media.title}" 
-               onclick="openGalleryModal('${media.file_url}', '${media.title}', '${media.description || ""}')"
-               onerror="this.parentElement.style.display='none'">
-          <div class="gallery-item-overlay">
-            <div class="gallery-item-info">
-              <h4>${media.title || "Фотография"}</h4>
-              <p class="gallery-item-date">${date}</p>
-            </div>
-            <button class="gallery-item-btn" onclick="openGalleryModal('${media.file_url}', '${media.title}', '${media.description || ""}'); event.stopPropagation();">
-              👁️ Посмотреть
-            </button>
-          </div>
-        </div>
-        ${
-          media.description
-            ? `
-          <div class="gallery-item-description">
-            <p>${media.description}</p>
-          </div>
-        `
-            : ""
-        }
-      </div>
-    `;
-  } else if (media.media_type === "video") {
-    return `
-      <div class="gallery-item video-item">
-        <div class="gallery-item-inner">
-          <div class="video-container">
-            ${
-              media.thumbnail_url
-                ? `
-              <img src="${media.thumbnail_url}" alt="${media.title}" class="video-thumbnail">
-            `
-                : ""
-            }
-            <button class="play-button" onclick="openVideoModal('${media.file_url}', '${media.title}', '${media.description || ""}'); event.stopPropagation();">
-              ▶️
-            </button>
-          </div>
-          <div class="gallery-item-overlay">
-            <div class="gallery-item-info">
-              <h4>${media.title || "Видео"}</h4>
-              <p class="gallery-item-date">${date}</p>
-            </div>
-            <button class="gallery-item-btn" onclick="openVideoModal('${media.file_url}', '${media.title}', '${media.description || ""}'); event.stopPropagation();">
-              🎥 Смотреть
-            </button>
-          </div>
-        </div>
-        ${
-          media.description
-            ? `
-          <div class="gallery-item-description">
-            <p>${media.description}</p>
-          </div>
-        `
-            : ""
-        }
-      </div>
-    `;
-  }
-
-  return "";
 }
 
 // Функции для модальных окон (добавим в глобальную область)
