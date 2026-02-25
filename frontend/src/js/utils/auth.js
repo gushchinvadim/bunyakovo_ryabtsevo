@@ -120,23 +120,26 @@ export const auth = {
    */
   async getProfile() {
     try {
-      const response = await fetch('http://localhost:8000/api/accounts/profile/', {
-        headers: {
-          ...this.getAuthHeader(),
+      const response = await fetch(
+        "http://localhost:8000/api/accounts/profile/",
+        {
+          headers: {
+            ...this.getAuthHeader(),
+          },
         },
-      });
-      
+      );
+
       if (!response.ok) {
-        throw new Error('Ошибка получения профиля');
+        throw new Error("Ошибка получения профиля");
       }
-      
+
       const data = await response.json();
-      localStorage.setItem('user', JSON.stringify(data)); // Обновляем кэш
+      localStorage.setItem("user", JSON.stringify(data)); // Обновляем кэш
       return data;
     } catch (error) {
-      console.error('Ошибка получения профиля:', error);
+      console.error("Ошибка получения профиля:", error);
       // Возвращаем кэшированные данные, если есть
-      const cachedUser = localStorage.getItem('user');
+      const cachedUser = localStorage.getItem("user");
       return cachedUser ? JSON.parse(cachedUser) : null;
     }
   },

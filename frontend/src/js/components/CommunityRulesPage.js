@@ -1,9 +1,9 @@
 // src/js/components/CommunityRulesPage.js
 
 export function createCommunityRulesPage() {
-  const page = document.createElement('div');
-  page.className = 'community-rules-page';
-  
+  const page = document.createElement("div");
+  page.className = "community-rules-page";
+
   page.innerHTML = `
     <div class="page-header">
       <h1 class="page-title">Правила сообщества</h1>
@@ -182,6 +182,6 @@ export function createCommunityRulesPage() {
       <a href="/login" class="btn-secondary">Войти в аккаунт</a>
     </div>
   `;
-  
+
   return page;
 }

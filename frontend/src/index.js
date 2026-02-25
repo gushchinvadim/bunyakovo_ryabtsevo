@@ -9,9 +9,9 @@ import { createRegisterPage } from "./js/components/RegisterPage.js";
 import { createMarketplacePage } from "./js/components/MarketplacePage.js";
 import { createCreateAdPage } from "./js/components/CreateAdPage.js";
 import { createMyAdsPage } from "./js/components/MyAdsPage.js";
-import { createEditAdPage } from './js/components/EditAdPage.js';
-import { createCommunityRulesPage } from './js/components/CommunityRulesPage.js';
-import { createChurchPage } from './js/components/ChurchPage.js';
+import { createEditAdPage } from "./js/components/EditAdPage.js";
+import { createCommunityRulesPage } from "./js/components/CommunityRulesPage.js";
+import { createChurchPage } from "./js/components/ChurchPage.js";
 
 // ======================
 // ИНИЦИАЛИЗАЦИЯ СТРАНИЦЫ
@@ -39,14 +39,14 @@ const routes = {
   "/": createMainContent,
   "/about": createGalleryPage,
   "/history": createHistoryPage,
-  "/church": createChurchPage, 
+  "/church": createChurchPage,
   "/marketplace": createMarketplacePage,
   "/login": createLoginPage,
   "/register": createRegisterPage,
   "/marketplace/create": createCreateAdPage,
   "/marketplace/my-ads": createMyAdsPage,
   "/community-rules": createCommunityRulesPage,
-  "404": createErrorPage, // ← Исправлено: строка '404', а не число
+  404: createErrorPage, // ← Исправлено: строка '404', а не число
 };
 
 // ======================
@@ -105,14 +105,14 @@ async function navigateTo(path) {
 
   try {
     // 🔑 ОБРАБОТКА ДИНАМИЧЕСКОГО МАРШРУТА /marketplace/edit/:id
-    if (normalizedPath.startsWith('/marketplace/edit/')) {
-      const adId = normalizedPath.split('/').pop();
-      
+    if (normalizedPath.startsWith("/marketplace/edit/")) {
+      const adId = normalizedPath.split("/").pop();
+
       // Проверяем, что adId — это число
       if (!/^\d+$/.test(adId)) {
-        throw new Error('Неверный ID объявления');
+        throw new Error("Неверный ID объявления");
       }
-      
+
       // Создаём страницу редактирования (асинхронно)
       const component = await createEditAdPage(adId);
       updateContent(component);
@@ -231,7 +231,7 @@ document.addEventListener("click", (e) => {
 
   // 🔑 КРИТИЧЕСКИ ВАЖНО: предотвращаем переход по ссылке
   e.preventDefault();
-  
+
   // Переходим через нашу навигацию
   navigateTo(href);
 });

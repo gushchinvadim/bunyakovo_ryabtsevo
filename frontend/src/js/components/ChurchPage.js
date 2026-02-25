@@ -1,9 +1,9 @@
 // src/js/components/ChurchPage.js
 
 export function createChurchPage() {
-  const page = document.createElement('div');
-  page.className = 'church-page';
-  
+  const page = document.createElement("div");
+  page.className = "church-page";
+
   page.innerHTML = `
     <div class="page-header">
       <h1 class="page-title">Покровская церковь</h1>
@@ -65,33 +65,33 @@ export function createChurchPage() {
       </div>
     </section>
   `;
-  
+
   // Загружаем данные после возврата компонента
   Promise.resolve().then(() => {
-    loadPriestInfo(page.querySelector('.church-priest-info'));
-    loadSchedule(page.querySelector('.church-schedule-content'));
-    loadAnnouncements(page.querySelector('.church-announcements-content'));
-    loadGallery(page.querySelector('.church-gallery-content'));
-    
+    loadPriestInfo(page.querySelector(".church-priest-info"));
+    loadSchedule(page.querySelector(".church-schedule-content"));
+    loadAnnouncements(page.querySelector(".church-announcements-content"));
+    loadGallery(page.querySelector(".church-gallery-content"));
+
     // Добавляем обработчик фильтров галереи
     setupGalleryFilters(page);
   });
-  
+
   return page;
 }
 
 // Загрузка информации о батюшке
 async function loadPriestInfo(container) {
   try {
-    const response = await fetch('http://localhost:8000/api/church/priests/');
-    
+    const response = await fetch("http://localhost:8000/api/church/priests/");
+
     if (!response.ok) {
-      throw new Error('Ошибка загрузки информации о батюшке');
+      throw new Error("Ошибка загрузки информации о батюшке");
     }
-    
+
     const data = await response.json();
     const priests = data.results || data; // Обрабатываем пагинацию
-    
+
     if (priests.length === 0) {
       container.innerHTML = `
         <div class="church-priest-card">
@@ -106,9 +106,8 @@ async function loadPriestInfo(container) {
       const priest = priests[0];
       container.innerHTML = createPriestCard(priest);
     }
-    
   } catch (error) {
-    console.error('Ошибка загрузки информации о батюшке:', error);
+    console.error("Ошибка загрузки информации о батюшке:", error);
     container.innerHTML = `
       <div class="church-priest-card error">
         <div class="priest-card-content">
@@ -122,15 +121,15 @@ async function loadPriestInfo(container) {
 // Загрузка расписания богослужений
 async function loadSchedule(container) {
   try {
-    const response = await fetch('http://localhost:8000/api/church/schedule/');
-    
+    const response = await fetch("http://localhost:8000/api/church/schedule/");
+
     if (!response.ok) {
-      throw new Error('Ошибка загрузки расписания');
+      throw new Error("Ошибка загрузки расписания");
     }
-    
+
     const data = await response.json();
     const schedule = data.results || data; // Обрабатываем пагинацию
-    
+
     if (schedule.length === 0) {
       container.innerHTML = `
         <div class="schedule-placeholder">
@@ -141,9 +140,8 @@ async function loadSchedule(container) {
     } else {
       container.innerHTML = createScheduleHTML(schedule);
     }
-    
   } catch (error) {
-    console.error('Ошибка загрузки расписания:', error);
+    console.error("Ошибка загрузки расписания:", error);
     container.innerHTML = `
       <div class="schedule-placeholder error">
         <p>⚠️ Не удалось загрузить расписание богослужений</p>
@@ -155,15 +153,17 @@ async function loadSchedule(container) {
 // Загрузка объявлений от батюшки
 async function loadAnnouncements(container) {
   try {
-    const response = await fetch('http://localhost:8000/api/church/announcements/');
-    
+    const response = await fetch(
+      "http://localhost:8000/api/church/announcements/",
+    );
+
     if (!response.ok) {
-      throw new Error('Ошибка загрузки объявлений');
+      throw new Error("Ошибка загрузки объявлений");
     }
-    
+
     const data = await response.json();
     const announcements = data.results || data; // Обрабатываем пагинацию
-    
+
     if (announcements.length === 0) {
       container.innerHTML = `
         <div class="announcements-placeholder">
@@ -172,13 +172,12 @@ async function loadAnnouncements(container) {
         </div>
       `;
     } else {
-      container.innerHTML = announcements.map(announcement => 
-        createAnnouncementCard(announcement)
-      ).join('');
+      container.innerHTML = announcements
+        .map((announcement) => createAnnouncementCard(announcement))
+        .join("");
     }
-    
   } catch (error) {
-    console.error('Ошибка загрузки объявлений:', error);
+    console.error("Ошибка загрузки объявлений:", error);
     container.innerHTML = `
       <div class="announcements-placeholder error">
         <p>⚠️ Не удалось загрузить объявления</p>
@@ -188,25 +187,25 @@ async function loadAnnouncements(container) {
 }
 
 // Загрузка галереи
-async function loadGallery(container, mediaType = 'all') {
+async function loadGallery(container, mediaType = "all") {
   try {
-    let url = 'http://localhost:8000/api/church/media/';
-    
-    if (mediaType === 'photo') {
-      url = 'http://localhost:8000/api/church/media/photos/';
-    } else if (mediaType === 'video') {
-      url = 'http://localhost:8000/api/church/media/videos/';
+    let url = "http://localhost:8000/api/church/media/";
+
+    if (mediaType === "photo") {
+      url = "http://localhost:8000/api/church/media/photos/";
+    } else if (mediaType === "video") {
+      url = "http://localhost:8000/api/church/media/videos/";
     }
-    
+
     const response = await fetch(url);
-    
+
     if (!response.ok) {
-      throw new Error('Ошибка загрузки галереи');
+      throw new Error("Ошибка загрузки галереи");
     }
-    
+
     const data = await response.json();
     const media = data.results || data; // Обрабатываем пагинацию
-    
+
     if (media.length === 0) {
       container.innerHTML = `
         <div class="gallery-placeholder">
@@ -215,13 +214,10 @@ async function loadGallery(container, mediaType = 'all') {
         </div>
       `;
     } else {
-      container.innerHTML = media.map(item => 
-        createMediaCard(item)
-      ).join('');
+      container.innerHTML = media.map((item) => createMediaCard(item)).join("");
     }
-    
   } catch (error) {
-    console.error('Ошибка загрузки галереи:', error);
+    console.error("Ошибка загрузки галереи:", error);
     container.innerHTML = `
       <div class="gallery-placeholder error">
         <p>⚠️ Не удалось загрузить галерею</p>
@@ -232,18 +228,18 @@ async function loadGallery(container, mediaType = 'all') {
 
 // Настройка фильтров галереи
 function setupGalleryFilters(page) {
-  const filterButtons = page.querySelectorAll('.gallery-filter-btn');
-  
-  filterButtons.forEach(button => {
-    button.addEventListener('click', () => {
+  const filterButtons = page.querySelectorAll(".gallery-filter-btn");
+
+  filterButtons.forEach((button) => {
+    button.addEventListener("click", () => {
       // Убираем активный класс у всех кнопок
-      filterButtons.forEach(btn => btn.classList.remove('active'));
+      filterButtons.forEach((btn) => btn.classList.remove("active"));
       // Добавляем активный класс к нажатой кнопке
-      button.classList.add('active');
-      
+      button.classList.add("active");
+
       const mediaType = button.dataset.type;
-      const galleryContainer = page.querySelector('.church-gallery-content');
-      
+      const galleryContainer = page.querySelector(".church-gallery-content");
+
       // Показываем лоадер
       galleryContainer.innerHTML = `
         <div class="gallery-loader">
@@ -251,7 +247,7 @@ function setupGalleryFilters(page) {
           <p>Загрузка...</p>
         </div>
       `;
-      
+
       // Загружаем галерею с фильтром
       loadGallery(galleryContainer, mediaType);
     });
@@ -269,36 +265,50 @@ function createPriestCard(priest) {
       </div>
     `;
   }
-  
-  const phone = priest.phone || 'Телефон не указан';
-  const phoneHref = priest.phone ? `tel:${priest.phone.replace(/\D/g, '')}` : '#';
-  
+
+  const phone = priest.phone || "Телефон не указан";
+  const phoneHref = priest.phone
+    ? `tel:${priest.phone.replace(/\D/g, "")}`
+    : "#";
+
   return `
     <div class="church-priest-card">
-      ${priest.photo_url ? `
+      ${
+        priest.photo_url
+          ? `
         <div class="priest-photo">
           <img src="${priest.photo_url}" alt="Фотография ${priest.name}" 
                onerror="this.style.display='none'">
         </div>
-      ` : ''}
+      `
+          : ""
+      }
       <div class="priest-card-content">
-        <h3 class="priest-name">${priest.name || 'Батюшка'}</h3>
-        <div class="priest-title">${priest.title || 'Настоятель храма'}</div>
+        <h3 class="priest-name">${priest.name || "Батюшка"}</h3>
+        <div class="priest-title">${priest.title || "Настоятель храма"}</div>
         <div class="priest-contact">
           <span class="contact-icon">📱</span>
           <a href="${phoneHref}" class="priest-phone">${phone}</a>
         </div>
-        ${priest.email ? `
+        ${
+          priest.email
+            ? `
           <div class="priest-contact">
             <span class="contact-icon">✉️</span>
             <a href="mailto:${priest.email}" class="priest-email">${priest.email}</a>
           </div>
-        ` : ''}
-        ${priest.biography ? `
+        `
+            : ""
+        }
+        ${
+          priest.biography
+            ? `
           <div class="priest-bio">
             <p>${priest.biography}</p>
           </div>
-        ` : ''}
+        `
+            : ""
+        }
       </div>
     </div>
   `;
@@ -307,14 +317,14 @@ function createPriestCard(priest) {
 // Создание расписания
 function createScheduleHTML(schedule) {
   if (!Array.isArray(schedule)) {
-    console.error('Schedule is not an array:', schedule);
+    console.error("Schedule is not an array:", schedule);
     return `
       <div class="schedule-placeholder error">
         <p>⚠️ Ошибка формата расписания</p>
       </div>
     `;
   }
-  
+
   // Сначала сортируем по дате, затем по дню недели
   const sortedSchedule = [...schedule].sort((a, b) => {
     // Если есть дата - сортируем по дате
@@ -326,61 +336,63 @@ function createScheduleHTML(schedule) {
     if (b.date) return 1;
     // Если нет дат - сортируем по дню недели
     const dayOrder = {
-      'monday': 1,
-      'tuesday': 2,
-      'wednesday': 3,
-      'thursday': 4,
-      'friday': 5,
-      'saturday': 6,
-      'sunday': 7,
-      'holiday': 8
+      monday: 1,
+      tuesday: 2,
+      wednesday: 3,
+      thursday: 4,
+      friday: 5,
+      saturday: 6,
+      sunday: 7,
+      holiday: 8,
     };
     return (dayOrder[a.day_of_week] || 9) - (dayOrder[b.day_of_week] || 9);
   });
-  
+
   // Группируем по дням недели ИЛИ по датам
   const days = {
-    'monday': 'Понедельник',
-    'tuesday': 'Вторник',
-    'wednesday': 'Среда',
-    'thursday': 'Четверг',
-    'friday': 'Пятница',
-    'saturday': 'Суббота',
-    'sunday': 'Воскресенье',
-    'holiday': 'Праздничный день'
+    monday: "Понедельник",
+    tuesday: "Вторник",
+    wednesday: "Среда",
+    thursday: "Четверг",
+    friday: "Пятница",
+    saturday: "Суббота",
+    sunday: "Воскресенье",
+    holiday: "Праздничный день",
   };
-  
+
   // Создаём группы: сначала по датам, потом по дням недели
   const groups = {};
-  
-  sortedSchedule.forEach(service => {
+
+  sortedSchedule.forEach((service) => {
     const key = service.date || service.day_of_week;
     if (!groups[key]) {
       groups[key] = {
-        type: service.date ? 'date' : 'day',
+        type: service.date ? "date" : "day",
         day_of_week: service.day_of_week,
         date: service.date,
         date_display: service.date_display,
-        services: []
+        services: [],
       };
     }
     groups[key].services.push(service);
   });
-  
+
   let html = '<div class="schedule-grid">';
-  
+
   // Отображаем группы в правильном порядке
   Object.entries(groups).forEach(([key, group]) => {
-    if (group.type === 'date') {
+    if (group.type === "date") {
       // Для служб с конкретной датой
       const date = new Date(group.date);
-      const dateDisplay = date.toLocaleDateString('ru-RU', {
-        weekday: 'long',
-        day: 'numeric',
-        month: 'long',
-        year: group.date_display.includes(new Date().getFullYear().toString()) ? undefined : 'numeric'
+      const dateDisplay = date.toLocaleDateString("ru-RU", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: group.date_display.includes(new Date().getFullYear().toString())
+          ? undefined
+          : "numeric",
       });
-      
+
       html += `
         <div class="schedule-day">
           <div class="day-header with-date">
@@ -388,19 +400,23 @@ function createScheduleHTML(schedule) {
           </div>
           <div class="day-services">
       `;
-      
-      group.services.forEach(service => {
+
+      group.services.forEach((service) => {
         html += `
           <div class="service-item">
             <div class="service-time">${service.time_display || service.time}</div>
-            <div class="service-name">${service.service_name || 'Богослужение'}</div>
-            ${service.description ? `
+            <div class="service-name">${service.service_name || "Богослужение"}</div>
+            ${
+              service.description
+                ? `
               <div class="service-description">${service.description}</div>
-            ` : ''}
+            `
+                : ""
+            }
           </div>
         `;
       });
-      
+
       html += `
           </div>
         </div>
@@ -408,7 +424,7 @@ function createScheduleHTML(schedule) {
     } else {
       // Для регулярных служб по дням недели
       const dayName = days[group.day_of_week] || group.day_of_week;
-      
+
       html += `
         <div class="schedule-day">
           <div class="day-header ${group.day_of_week}">
@@ -416,61 +432,65 @@ function createScheduleHTML(schedule) {
           </div>
           <div class="day-services">
       `;
-      
-      group.services.forEach(service => {
+
+      group.services.forEach((service) => {
         html += `
           <div class="service-item">
             <div class="service-time">${service.time_display || service.time}</div>
-            <div class="service-name">${service.service_name || 'Богослужение'}</div>
-            ${service.description ? `
+            <div class="service-name">${service.service_name || "Богослужение"}</div>
+            ${
+              service.description
+                ? `
               <div class="service-description">${service.description}</div>
-            ` : ''}
+            `
+                : ""
+            }
           </div>
         `;
       });
-      
+
       html += `
           </div>
         </div>
       `;
     }
   });
-  
-  html += '</div>';
+
+  html += "</div>";
   return html;
 }
 
 // Создание карточки объявления
 function createAnnouncementCard(announcement) {
-  if (!announcement) return '';
-  
-  const date = announcement.created_at 
-    ? new Date(announcement.created_at).toLocaleDateString('ru-RU', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
+  if (!announcement) return "";
+
+  const date = announcement.created_at
+    ? new Date(announcement.created_at).toLocaleDateString("ru-RU", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
       })
-    : 'Дата не указана';
-  
+    : "Дата не указана";
+
   const typeBadges = {
-    'general': 'Общее',
-    'service': 'Служба',
-    'event': 'Мероприятие',
-    'prayer': 'Молитва',
-    'urgent': 'СРОЧНО'
+    general: "Общее",
+    service: "Служба",
+    event: "Мероприятие",
+    prayer: "Молитва",
+    urgent: "СРОЧНО",
   };
-  
+
   const typeColors = {
-    'general': '#6c757d',
-    'service': '#007bff',
-    'event': '#ffc107',
-    'prayer': '#17a2b8',
-    'urgent': '#dc3545'
+    general: "#6c757d",
+    service: "#007bff",
+    event: "#ffc107",
+    prayer: "#17a2b8",
+    urgent: "#dc3545",
   };
-  
-  const badgeText = typeBadges[announcement.announcement_type] || 'Объявление';
-  const badgeColor = typeColors[announcement.announcement_type] || '#6c757d';
-  
+
+  const badgeText = typeBadges[announcement.announcement_type] || "Объявление";
+  const badgeColor = typeColors[announcement.announcement_type] || "#6c757d";
+
   return `
     <div class="announcement-card ${announcement.announcement_type}">
       <div class="announcement-header">
@@ -479,120 +499,136 @@ function createAnnouncementCard(announcement) {
         </div>
         <div class="announcement-date">${date}</div>
       </div>
-      <h3 class="announcement-title">${announcement.title || 'Без заголовка'}</h3>
+      <h3 class="announcement-title">${announcement.title || "Без заголовка"}</h3>
       <div class="announcement-content">
-        <p>${announcement.content || 'Содержание отсутствует'}</p>
+        <p>${announcement.content || "Содержание отсутствует"}</p>
       </div>
-      ${announcement.priest_name ? `
+      ${
+        announcement.priest_name
+          ? `
         <div class="announcement-author">
           <span class="author-icon">☦️</span>
           <span>${announcement.priest_name}</span>
         </div>
-      ` : ''}
+      `
+          : ""
+      }
     </div>
   `;
 }
 
 // Создание карточки медиа
 function createMediaCard(media) {
-  if (!media) return '';
-  
+  if (!media) return "";
+
   const date = media.event_date
-    ? new Date(media.event_date).toLocaleDateString('ru-RU', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
+    ? new Date(media.event_date).toLocaleDateString("ru-RU", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
       })
-    : 'Дата не указана';
-  
-  if (media.media_type === 'photo') {
+    : "Дата не указана";
+
+  if (media.media_type === "photo") {
     return `
       <div class="gallery-item photo-item">
         <div class="gallery-item-inner">
           <img src="${media.file_url}" alt="${media.title}" 
-               onclick="openGalleryModal('${media.file_url}', '${media.title}', '${media.description || ''}')"
+               onclick="openGalleryModal('${media.file_url}', '${media.title}', '${media.description || ""}')"
                onerror="this.parentElement.style.display='none'">
           <div class="gallery-item-overlay">
             <div class="gallery-item-info">
-              <h4>${media.title || 'Фотография'}</h4>
+              <h4>${media.title || "Фотография"}</h4>
               <p class="gallery-item-date">${date}</p>
             </div>
-            <button class="gallery-item-btn" onclick="openGalleryModal('${media.file_url}', '${media.title}', '${media.description || ''}'); event.stopPropagation();">
+            <button class="gallery-item-btn" onclick="openGalleryModal('${media.file_url}', '${media.title}', '${media.description || ""}'); event.stopPropagation();">
               👁️ Посмотреть
             </button>
           </div>
         </div>
-        ${media.description ? `
+        ${
+          media.description
+            ? `
           <div class="gallery-item-description">
             <p>${media.description}</p>
           </div>
-        ` : ''}
+        `
+            : ""
+        }
       </div>
     `;
-  } else if (media.media_type === 'video') {
+  } else if (media.media_type === "video") {
     return `
       <div class="gallery-item video-item">
         <div class="gallery-item-inner">
           <div class="video-container">
-            ${media.thumbnail_url ? `
+            ${
+              media.thumbnail_url
+                ? `
               <img src="${media.thumbnail_url}" alt="${media.title}" class="video-thumbnail">
-            ` : ''}
-            <button class="play-button" onclick="openVideoModal('${media.file_url}', '${media.title}', '${media.description || ''}'); event.stopPropagation();">
+            `
+                : ""
+            }
+            <button class="play-button" onclick="openVideoModal('${media.file_url}', '${media.title}', '${media.description || ""}'); event.stopPropagation();">
               ▶️
             </button>
           </div>
           <div class="gallery-item-overlay">
             <div class="gallery-item-info">
-              <h4>${media.title || 'Видео'}</h4>
+              <h4>${media.title || "Видео"}</h4>
               <p class="gallery-item-date">${date}</p>
             </div>
-            <button class="gallery-item-btn" onclick="openVideoModal('${media.file_url}', '${media.title}', '${media.description || ''}'); event.stopPropagation();">
+            <button class="gallery-item-btn" onclick="openVideoModal('${media.file_url}', '${media.title}', '${media.description || ""}'); event.stopPropagation();">
               🎥 Смотреть
             </button>
           </div>
         </div>
-        ${media.description ? `
+        ${
+          media.description
+            ? `
           <div class="gallery-item-description">
             <p>${media.description}</p>
           </div>
-        ` : ''}
+        `
+            : ""
+        }
       </div>
     `;
   }
-  
-  return '';
+
+  return "";
 }
 
 // Функции для модальных окон (добавим в глобальную область)
-window.openGalleryModal = function(imageUrl, title, description) {
-  const modal = document.createElement('div');
-  modal.className = 'gallery-modal';
+window.openGalleryModal = function (imageUrl, title, description) {
+  const modal = document.createElement("div");
+  modal.className = "gallery-modal";
   modal.innerHTML = `
     <div class="gallery-modal-content">
       <button class="gallery-modal-close">&times;</button>
       <h2>${title}</h2>
       <img src="${imageUrl}" alt="${title}">
-      ${description ? `<p class="modal-description">${description}</p>` : ''}
+      ${description ? `<p class="modal-description">${description}</p>` : ""}
     </div>
   `;
-  
+
   document.body.appendChild(modal);
-  
+
   // Закрытие модалки
-  modal.querySelector('.gallery-modal-close').addEventListener('click', () => {
+  modal.querySelector(".gallery-modal-close").addEventListener("click", () => {
     modal.remove();
   });
-  
-  modal.addEventListener('click', (e) => {
+
+  modal.addEventListener("click", (e) => {
     if (e.target === modal) {
       modal.remove();
     }
   });
 };
 
-window.openVideoModal = function(videoUrl, title, description) {
-  const modal = document.createElement('div');
-  modal.className = 'gallery-modal';
+window.openVideoModal = function (videoUrl, title, description) {
+  const modal = document.createElement("div");
+  modal.className = "gallery-modal";
   modal.innerHTML = `
     <div class="gallery-modal-content video-modal">
       <button class="gallery-modal-close">&times;</button>
@@ -601,18 +637,18 @@ window.openVideoModal = function(videoUrl, title, description) {
         <source src="${videoUrl}" type="video/mp4">
         Ваш браузер не поддерживает видео.
       </video>
-      ${description ? `<p class="modal-description">${description}</p>` : ''}
+      ${description ? `<p class="modal-description">${description}</p>` : ""}
     </div>
   `;
-  
+
   document.body.appendChild(modal);
-  
+
   // Закрытие модалки
-  modal.querySelector('.gallery-modal-close').addEventListener('click', () => {
+  modal.querySelector(".gallery-modal-close").addEventListener("click", () => {
     modal.remove();
   });
-  
-  modal.addEventListener('click', (e) => {
+
+  modal.addEventListener("click", (e) => {
     if (e.target === modal) {
       modal.remove();
     }

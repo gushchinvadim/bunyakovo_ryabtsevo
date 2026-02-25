@@ -152,7 +152,7 @@ export async function createMarketplacePage() {
       buy: "Куплю",
       rent: "Сдам",
       free: "Отдам",
-      handmade: 'Услуги мастера', 
+      handmade: "Услуги мастера",
     };
 
     const villageNames = {

@@ -1,4 +1,6 @@
 // src/js/components/History.js
+import { CONFIG } from "/src/config.js";
+
 export function createHistoryPage() {
   const page = document.createElement("div");
   page.className = "history-page";
@@ -31,7 +33,7 @@ export function createHistoryPage() {
         <p>Село Буняково — старинное, расположено оно на берегах речки Малой Северки (Гнилуше). Через село проходила древняя дорога от села Бронниче до села Подол. В царствование Екатерины II эти села стали городами. От Бронниц до Подольска пролегал исстари торговый путь, но особенно оживленный он стал с 1729 года, когда в селе Никитское начали устраивать ярмарки.</p>
         
         <figure class="history-image">
-          <img src="http://localhost:8000/static/images/history/ivan-groznyi.jpg" alt="Иван Грозный" style="width:350px">
+          <img src="${CONFIG.STATIC_URL}/images/history/ivan-groznyi.jpg" alt="Иван Грозный" style="width:350px">
           <figcaption>Иван Грозный</figcaption>
         </figure>
         
@@ -41,7 +43,7 @@ export function createHistoryPage() {
         <p>В конце XVI века сельцо Буняково «по обе стороны речки Гнилуши» принадлежало известному воеводе князю Ивану Юрьевичу Лобанову-Ростовскому (воевода в 1572 г. — в Туровле, а в 1574-1576 гг. — в Ругодивле). В 1580 году был «послан на Пахру». Известно, когда на Каширской дороге в 1580 г. появились до 200 крымских татар, Царь Иоанн Грозный послал для борьбы с ними воевод Ивана Лобанова-Ростовского и Федора Головина.</p>
         
         <figure class="history-image">
-          <img src="http://localhost:8000/static/images/history/zahvat-tatar.jpg" alt="Захват татар">
+          <img src="${CONFIG.STATIC_URL}/images/history/zahvat-tatar.jpg" alt="Захват татар">
           <figcaption>Захват татар</figcaption>
         </figure>
         
@@ -63,7 +65,7 @@ export function createHistoryPage() {
     </p>
 
     <figure class="history-image">
-          <img src="http://localhost:8000/static/images/history/polenov-zima.jpg" alt="Поленов - Зима">
+          <img src="${CONFIG.STATIC_URL}/images/history/polenov-zima.jpg" alt="Поленов - Зима">
           <figcaption>Поленов - Зима</figcaption>
     </figure>
 
@@ -73,7 +75,7 @@ export function createHistoryPage() {
     </p>
 
     <figure class="history-image">
-          <img src="http://localhost:8000/static/images/history/wood-church.jpg" alt="Деревянная церковь">
+          <img src="${CONFIG.STATIC_URL}/images/history/wood-church.jpg" alt="Деревянная церковь">
           <figcaption>Деревянная церковь</figcaption>
     </figure>
 <h2><a id="century19">XIX век</a></h2>
@@ -95,7 +97,7 @@ export function createHistoryPage() {
      <p></a>Ремонт храма был завершен летом 1901&nbsp;года. В&nbsp;воскресный день 29&nbsp;июля 1901 года при небывалом стечении народа состоялось освящение обновлённого главного храма во&nbsp;имя Покрова Пресвятой Богородицы, стены которого окрашены и&nbsp;расписаны живописью, вновь вызолочен иконостас, исправлены ветхости. Своим обновлением храм обязан благотворителям, главным из&nbsp;которых был бывший прихожанин церкви московский мещанин Аркадий Матвеевич Цыганов. В&nbsp;следующем году освящены и&nbsp;приделы.
     </p>
     <figure class="history-image">
-          <img src="http://localhost:8000/static/images/history/church.jpg" "alt="Покровская церковь">
+          <img src="${CONFIG.STATIC_URL}/images/history/church.jpg" "alt="Покровская церковь">
           <figcaption>Покровская церковь</figcaption>
     </figure>
 
@@ -107,7 +109,7 @@ export function createHistoryPage() {
     <p>После революции 1917 года у&nbsp;Покровской церкви изъяли церковные ценности и&nbsp;землю.</p>
 
     <figure class="history-image">
-          <img src="http://localhost:8000/static/images/history/broken-church.jpg" "alt="Разрушенная церковь">
+          <img src="${CONFIG.STATIC_URL}/images/history/broken-church.jpg" "alt="Разрушенная церковь">
           <figcaption>Разрушенная церковь</figcaption>
     </figure>
 
@@ -116,7 +118,7 @@ export function createHistoryPage() {
     <p>В&nbsp;1991 году церковь передали православной общине, с&nbsp;этого года и&nbsp;началось восстановление, надо было воздвигнуть колокольню, построить утраченное: крышу, часть стены, колонны портика, пол, своды, окна.</p>
     <p>Сначала заделали проемы в&nbsp;стенах, застелили плитами пол, установили оконные проёмы, своды, верхнюю часть колокольни, провели отопление и&nbsp;электроснабжение.</p>
     <figure class="history-image">
-          <img src="http://localhost:8000/static/images/history/modern-church.jpeg" "alt="Современная церковь">
+          <img src="${CONFIG.STATIC_URL}/images/history/modern-church.jpeg" "alt="Современная церковь">
           <figcaption>Современная церковь</figcaption>
     </figure>
     <p>В&nbsp;1991 году настоятелем церкви Покрова Пресвятой Богородицы назначен священник Александр Пахомов.</p>
@@ -124,14 +126,14 @@ export function createHistoryPage() {
    
     <p>Станция Востряково, построенная и&nbsp;введенная эксплуатацию после окончания строительства Павелецкой железной дороги оказалась вблизи села Буняково.</p>
     <figure class="history-image">
-          <img src="http://localhost:8000/static/images/history/station-vostr.jpg" "alt="Станция Востряково">
+          <img src="${CONFIG.STATIC_URL}/images/history/station-vostr.jpg" "alt="Станция Востряково">
     <figcaption>Станция Востряково</figcaption>
     </figure>
 
 
     <h1 id="vov" class="page-title">Великая Отечественная война</h1>
     <figure class="history-image">
-          <img src="http://localhost:8000/static/images/history/orden.png" "alt="Орден отечественной войны" style="width:200px">
+          <img src="${CONFIG.STATIC_URL}/images/history/orden.png" "alt="Орден отечественной войны" style="width:200px">
     <figcaption>Орден Отечественной войны</figcaption>
     </figure>
 
@@ -146,7 +148,7 @@ export function createHistoryPage() {
        
 
     <figure class="history-image">
-          <img src="http://localhost:8000/static/images/history/zvezda.png" "alt="Звезда" style="width:200px">
+          <img src="${CONFIG.STATIC_URL}/images/history/zvezda.png" "alt="Звезда" style="width:200px">
     <figcaption>Звезда</figcaption>
     </figure>
 
@@ -350,49 +352,49 @@ export function createHistoryPage() {
 </ol>
         
     <figure class="history-image">
-          <img src="http://localhost:8000/static/images/history/monument.jpg" "alt="Монумент">
+          <img src="${CONFIG.STATIC_URL}/images/history/monument.jpg" "alt="Монумент">
           <figcaption>Монумент</figcaption>
     </figure>
 
 <h1><a id="facts">Интересные факты</a></h1>
 
     <figure class="history-image">
-          <img src="http://localhost:8000/static/images/history/doc_1.jpg" "alt="Документ">
+          <img src="${CONFIG.STATIC_URL}/images/history/doc_1.jpg" "alt="Документ">
           <figcaption>Документ</figcaption>
     </figure>
 
     <figure class="history-image">
-          <img src="http://localhost:8000/static/images/history/doc_2.jpg" "alt="Выписка из протокола собрания<">
+          <img src="${CONFIG.STATIC_URL}/images/history/doc_2.jpg" "alt="Выписка из протокола собрания<">
           <figcaption>Выписка из протокола собрания</figcaption>
     </figure>
 
     <figure class="history-image">
-          <img src="http://localhost:8000/static/images/history/monument_1.jpg" "alt="Монумент">
+          <img src="${CONFIG.STATIC_URL}/images/history/monument_1.jpg" "alt="Монумент">
           <figcaption>Начало строительства монумента</figcaption>
     </figure>
 
     <figure class="history-image">
-          <img src="http://localhost:8000/static/images/history/monument_2.jpg" "alt="Монумент">
+          <img src="${CONFIG.STATIC_URL}images/history/monument_2.jpg" "alt="Монумент">
           <figcaption>Местные жители активно участвуют в строительстве монумента</figcaption>
     </figure>
         <figure class="history-image">
-          <img src="http://localhost:8000/static/images/history/monument_3.jpg" "alt="Монумент">
+          <img src="${CONFIG.STATIC_URL}/images/history/monument_3.jpg" "alt="Монумент">
           <figcaption>Торжественный митинг</figcaption>
     </figure>
         <figure class="history-image">
-          <img src="http://localhost:8000/static/images/history/monument_4.jpg" "alt="Монумент">
+          <img src="${CONFIG.STATIC_URL}/images/history/monument_4.jpg" "alt="Монумент">
           <figcaption>Открытие монумента</figcaption>
     </figure>
     <figure class="history-image">
-          <img src="http://localhost:8000/static/images/history/monument_5.jpg" "alt="Монумент">
+          <img src="${CONFIG.STATIC_URL}/images/history/monument_5.jpg" "alt="Монумент">
           <figcaption>Местные жители фото на память</figcaption>
     </figure>
         <figure class="history-image">
-          <img src="http://localhost:8000/static/images/history/monument_6.jpg" "alt="Монумент">
+          <img src="${CONFIG.STATIC_URL}/images/history/monument_6.jpg" "alt="Монумент">
           <figcaption>Памятные венки</figcaption>
     </figure>
         <figure class="history-image">
-          <img src="http://localhost:8000/static/images/history/monument_7.jpg" "alt="Монумент">
+          <img src="${CONFIG.STATIC_URL}/images/history/monument_7.jpg" "alt="Монумент">
           <figcaption>Фото на память</figcaption>
     </figure>
 

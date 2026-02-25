@@ -1,10 +1,10 @@
 // src/js/components/EditAdPage.js
-import { auth } from '../utils/auth.js';
+import { auth } from "../utils/auth.js";
 
 export async function createEditAdPage(adId) {
-  const page = document.createElement('div');
-  page.className = 'edit-ad-page';
-  
+  const page = document.createElement("div");
+  page.className = "edit-ad-page";
+
   // Проверка авторизации
   if (!auth.isLoggedIn()) {
     page.innerHTML = `
@@ -20,7 +20,7 @@ export async function createEditAdPage(adId) {
     `;
     return page;
   }
-  
+
   page.innerHTML = `
     <div class="page-header">
       <h1 class="page-title">Редактировать объявление</h1>
@@ -174,116 +174,126 @@ export async function createEditAdPage(adId) {
     
     <div class="edit-ad-message" id="editAdMessage" style="display:none"></div>
   `;
-  
-  const loadingEl = page.querySelector('.edit-ad-loading');
-  const formContainer = page.querySelector('.edit-ad-form-container');
-  const errorEl = page.querySelector('.edit-ad-error');
-  const editAdMessage = page.querySelector('#editAdMessage');
-  
+
+  const loadingEl = page.querySelector(".edit-ad-loading");
+  const formContainer = page.querySelector(".edit-ad-form-container");
+  const errorEl = page.querySelector(".edit-ad-error");
+  const editAdMessage = page.querySelector("#editAdMessage");
+
   // Загружаем данные объявления
   try {
-    const response = await fetch(`http://localhost:8000/api/marketplace/ads/${adId}/`, {
-      headers: auth.getAuthHeader(),
-    });
-    
+    const response = await fetch(
+      `http://localhost:8000/api/marketplace/ads/${adId}/`,
+      {
+        headers: auth.getAuthHeader(),
+      },
+    );
+
     if (!response.ok) {
-      throw new Error('Объявление не найдено или недоступно для редактирования');
+      throw new Error(
+        "Объявление не найдено или недоступно для редактирования",
+      );
     }
-    
+
     const ad = await response.json();
     populateForm(ad);
-    loadingEl.style.display = 'none';
-    formContainer.style.display = 'block';
-    
+    loadingEl.style.display = "none";
+    formContainer.style.display = "block";
   } catch (error) {
-    console.error('Ошибка загрузки объявления:', error);
-    loadingEl.style.display = 'none';
-    errorEl.style.display = 'block';
-    errorEl.querySelector('p').textContent = error.message || 'Не удалось загрузить объявление';
+    console.error("Ошибка загрузки объявления:", error);
+    loadingEl.style.display = "none";
+    errorEl.style.display = "block";
+    errorEl.querySelector("p").textContent =
+      error.message || "Не удалось загрузить объявление";
   }
-  
+
   // Функция заполнения формы данными объявления
   function populateForm(ad) {
-    const form = page.querySelector('#editAdForm');
-    
+    const form = page.querySelector("#editAdForm");
+
     form.title.value = ad.title;
     form.description.value = ad.description;
     form.ad_type.value = ad.ad_type;
     form.village.value = ad.village;
-    form.phone.value = ad.phone || '';
-    form.email.value = ad.email || '';
-    form.address.value = ad.address || '';
-    
+    form.phone.value = ad.phone || "";
+    form.email.value = ad.email || "";
+    form.address.value = ad.address || "";
+
     if (ad.price !== null) {
       form.price.value = ad.price;
     }
-    
+
     // Показ/скрытие поля цены
-    const priceGroup = page.querySelector('#priceGroup');
-    const priceInput = page.querySelector('#price');
-    
-    if (ad.ad_type === 'free') {
-      priceGroup.style.display = 'none';
+    const priceGroup = page.querySelector("#priceGroup");
+    const priceInput = page.querySelector("#price");
+
+    if (ad.ad_type === "free") {
+      priceGroup.style.display = "none";
       priceInput.required = false;
-    } else if (ad.ad_type === 'buy') {
-      priceGroup.style.display = 'none';
+    } else if (ad.ad_type === "buy") {
+      priceGroup.style.display = "none";
       priceInput.required = false;
     } else {
-      priceGroup.style.display = 'block';
+      priceGroup.style.display = "block";
       priceInput.required = true;
     }
-    
+
     // Обработчик изменения типа объявления
-    const adTypeSelect = page.querySelector('#ad_type');
-    adTypeSelect.addEventListener('change', () => {
-      if (adTypeSelect.value === 'free') {
-        priceGroup.style.display = 'none';
+    const adTypeSelect = page.querySelector("#ad_type");
+    adTypeSelect.addEventListener("change", () => {
+      if (adTypeSelect.value === "free") {
+        priceGroup.style.display = "none";
         priceInput.required = false;
-        priceInput.value = '';
-      } else if (adTypeSelect.value === 'buy') {
-        priceGroup.style.display = 'none';
+        priceInput.value = "";
+      } else if (adTypeSelect.value === "buy") {
+        priceGroup.style.display = "none";
         priceInput.required = false;
       } else {
-        priceGroup.style.display = 'block';
+        priceGroup.style.display = "block";
         priceInput.required = true;
       }
     });
-    
+
     // Отображение текущих изображений
-    const currentImagesGrid = page.querySelector('#currentImages');
+    const currentImagesGrid = page.querySelector("#currentImages");
     if (ad.images && ad.images.length > 0) {
-      currentImagesGrid.innerHTML = ad.images.map(img => `
+      currentImagesGrid.innerHTML = ad.images
+        .map(
+          (img) => `
         <div class="current-image-item">
           <img src="${img.image_url}" alt="Текущее фото" loading="lazy">
         </div>
-      `).join('');
+      `,
+        )
+        .join("");
     } else {
-      currentImagesGrid.innerHTML = '<p class="no-images">Нет текущих фотографий</p>';
+      currentImagesGrid.innerHTML =
+        '<p class="no-images">Нет текущих фотографий</p>';
     }
-    
+
     // Предпросмотр новых изображений
-    const imagesInput = page.querySelector('#images');
-    const imagePreview = page.querySelector('#imagePreview');
-    
-    imagesInput.addEventListener('change', () => {
-      imagePreview.innerHTML = '';
-      
+    const imagesInput = page.querySelector("#images");
+    const imagePreview = page.querySelector("#imagePreview");
+
+    imagesInput.addEventListener("change", () => {
+      imagePreview.innerHTML = "";
+
       if (imagesInput.files.length > 3) {
-        showMessage('Можно загрузить максимум 3 изображения', 'error');
-        imagesInput.value = '';
+        showMessage("Можно загрузить максимум 3 изображения", "error");
+        imagesInput.value = "";
         return;
       }
-      
-      Array.from(imagesInput.files).forEach(file => {
+
+      Array.from(imagesInput.files).forEach((file) => {
         if (file.size > 5 * 1024 * 1024) {
-          showMessage(`Файл ${file.name} превышает 5 МБ`, 'error');
+          showMessage(`Файл ${file.name} превышает 5 МБ`, "error");
           return;
         }
-        
+
         const reader = new FileReader();
         reader.onload = (e) => {
-          const imgWrapper = document.createElement('div');
-          imgWrapper.className = 'preview-image';
+          const imgWrapper = document.createElement("div");
+          imgWrapper.className = "preview-image";
           imgWrapper.innerHTML = `
             <img src="${e.target.result}" alt="Preview">
             <span class="remove-image" data-file="${file.name}">&times;</span>
@@ -294,99 +304,106 @@ export async function createEditAdPage(adId) {
         reader.readAsDataURL(file);
       });
     });
-    
+
     // Удаление изображения из предпросмотра
-    imagePreview.addEventListener('click', (e) => {
-      if (e.target.classList.contains('remove-image')) {
+    imagePreview.addEventListener("click", (e) => {
+      if (e.target.classList.contains("remove-image")) {
         const fileName = e.target.dataset.file;
         const files = Array.from(imagesInput.files);
-        const filteredFiles = files.filter(f => f.name !== fileName);
-        
+        const filteredFiles = files.filter((f) => f.name !== fileName);
+
         const dataTransfer = new DataTransfer();
-        filteredFiles.forEach(file => dataTransfer.items.add(file));
+        filteredFiles.forEach((file) => dataTransfer.items.add(file));
         imagesInput.files = dataTransfer.files;
-        
+
         e.target.parentElement.remove();
       }
     });
-    
+
     // Отправка формы
-    form.addEventListener('submit', async (e) => {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      
+
       // Валидация цены
       const adType = adTypeSelect.value;
-      if (adType !== 'free' && adType !== 'buy' && !priceInput.value) {
-        showMessage('Укажите цену для этого типа объявления', 'error');
+      if (adType !== "free" && adType !== "buy" && !priceInput.value) {
+        showMessage("Укажите цену для этого типа объявления", "error");
         return;
       }
-      
-      showMessage('Сохранение изменений...', 'info');
-      
+
+      showMessage("Сохранение изменений...", "info");
+
       try {
         // Создаём данные для отправки
         const formData = new FormData();
-        formData.append('title', form.title.value.trim());
-        formData.append('description', form.description.value.trim());
-        formData.append('ad_type', adType);
-        formData.append('village', form.village.value);
-        
-        if (priceInput.value && adType !== 'free') {
-          formData.append('price', priceInput.value);
+        formData.append("title", form.title.value.trim());
+        formData.append("description", form.description.value.trim());
+        formData.append("ad_type", adType);
+        formData.append("village", form.village.value);
+
+        if (priceInput.value && adType !== "free") {
+          formData.append("price", priceInput.value);
         }
-        
-        formData.append('phone', form.phone.value.trim());
-        formData.append('email', form.email.value.trim());
-        
+
+        formData.append("phone", form.phone.value.trim());
+        formData.append("email", form.email.value.trim());
+
         if (form.address.value) {
-          formData.append('address', form.address.value.trim());
+          formData.append("address", form.address.value.trim());
         }
-        
+
         // Добавляем новые изображения (если есть)
         if (imagesInput.files.length > 0) {
           Array.from(imagesInput.files).forEach((file, index) => {
-            formData.append('images', file);
+            formData.append("images", file);
           });
         }
-        
-        const response = await fetch(`http://localhost:8000/api/marketplace/ads/${adId}/`, {
-          method: 'PUT',
-          headers: {
-            ...auth.getAuthHeader(),
-            // Не указываем Content-Type — браузер сам установит с boundary
+
+        const response = await fetch(
+          `http://localhost:8000/api/marketplace/ads/${adId}/`,
+          {
+            method: "PUT",
+            headers: {
+              ...auth.getAuthHeader(),
+              // Не указываем Content-Type — браузер сам установит с boundary
+            },
+            body: formData,
           },
-          body: formData,
-        });
-        
+        );
+
         if (!response.ok) {
           const error = await response.json();
-          throw new Error(error.detail || error.error || 'Ошибка сохранения изменений');
+          throw new Error(
+            error.detail || error.error || "Ошибка сохранения изменений",
+          );
         }
-        
-        showMessage('Изменения сохранены! Объявление отправлено на модерацию.', 'success');
-        
+
+        showMessage(
+          "Изменения сохранены! Объявление отправлено на модерацию.",
+          "success",
+        );
+
         // Через 2 секунды перенаправляем на мои объявления
         setTimeout(() => {
-          window.location.href = '/marketplace/my-ads';
+          window.location.href = "/marketplace/my-ads";
         }, 2000);
-        
       } catch (error) {
-        showMessage(error.message || 'Ошибка сохранения', 'error');
+        showMessage(error.message || "Ошибка сохранения", "error");
       }
     });
   }
-  
+
   function showMessage(text, type) {
     editAdMessage.textContent = text;
-    editAdMessage.style.display = 'block';
+    editAdMessage.style.display = "block";
     editAdMessage.className = `edit-ad-message ${type}`;
     // Автоматически скрываем через 5 секунд для успеха
-    if (type === 'success') {
+    if (type === "success") {
       setTimeout(() => {
-        editAdMessage.style.display = 'none';
+        editAdMessage.style.display = "none";
       }, 5000);
     }
   }
-  
+
   return page;
 }

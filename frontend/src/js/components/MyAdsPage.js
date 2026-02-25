@@ -1,10 +1,10 @@
 // src/js/components/MyAdsPage.js
-import { auth } from '../utils/auth.js';
+import { auth } from "../utils/auth.js";
 
 export async function createMyAdsPage() {
-  const page = document.createElement('div');
-  page.className = 'my-ads-page';
-  
+  const page = document.createElement("div");
+  page.className = "my-ads-page";
+
   // Проверка авторизации
   if (!auth.isLoggedIn()) {
     page.innerHTML = `
@@ -20,7 +20,7 @@ export async function createMyAdsPage() {
     `;
     return page;
   }
-  
+
   page.innerHTML = `
     <div class="page-header">
       <h1 class="page-title">Мои объявления</h1>
@@ -47,43 +47,46 @@ export async function createMyAdsPage() {
       <p>Не удалось загрузить объявления. Попробуйте обновить страницу.</p>
     </div>
   `;
-  
-  const myAdsGrid = page.querySelector('.my-ads-grid');
-  const loadingEl = page.querySelector('.my-ads-loading');
-  const errorEl = page.querySelector('.my-ads-error');
-  
+
+  const myAdsGrid = page.querySelector(".my-ads-grid");
+  const loadingEl = page.querySelector(".my-ads-loading");
+  const errorEl = page.querySelector(".my-ads-error");
+
   // Загружаем объявления
   await loadMyAds();
-  
+
   async function loadMyAds() {
-    loadingEl.style.display = 'block';
-    myAdsGrid.style.display = 'none';
-    errorEl.style.display = 'none';
-    
+    loadingEl.style.display = "block";
+    myAdsGrid.style.display = "none";
+    errorEl.style.display = "none";
+
     try {
-      const response = await fetch('http://localhost:8000/api/marketplace/ads/my_ads/', {
-        headers: auth.getAuthHeader(),
-      });
-      
+      const response = await fetch(
+        "http://localhost:8000/api/marketplace/ads/my_ads/",
+        {
+          headers: auth.getAuthHeader(),
+        },
+      );
+
       if (!response.ok) {
-        throw new Error('Ошибка загрузки объявлений');
+        throw new Error("Ошибка загрузки объявлений");
       }
-      
+
       const ads = await response.json();
       renderMyAds(ads);
-      
     } catch (error) {
-      console.error('Ошибка загрузки объявлений:', error);
-      errorEl.querySelector('p').textContent = error.message || 'Не удалось загрузить объявления';
-      loadingEl.style.display = 'none';
-      errorEl.style.display = 'block';
+      console.error("Ошибка загрузки объявлений:", error);
+      errorEl.querySelector("p").textContent =
+        error.message || "Не удалось загрузить объявления";
+      loadingEl.style.display = "none";
+      errorEl.style.display = "block";
     }
   }
-  
+
   function renderMyAds(ads) {
-    loadingEl.style.display = 'none';
-    myAdsGrid.style.display = 'grid';
-    
+    loadingEl.style.display = "none";
+    myAdsGrid.style.display = "grid";
+
     if (ads.length === 0) {
       myAdsGrid.innerHTML = `
         <div class="my-ads-empty">
@@ -93,112 +96,131 @@ export async function createMyAdsPage() {
       `;
       return;
     }
-    
-    myAdsGrid.innerHTML = ads.map(ad => createMyAdCard(ad)).join('');
-    
+
+    myAdsGrid.innerHTML = ads.map((ad) => createMyAdCard(ad)).join("");
+
     // Добавляем обработчики кнопок
-    myAdsGrid.querySelectorAll('.btn-edit').forEach(btn => {
-      btn.addEventListener('click', (e) => {
+    myAdsGrid.querySelectorAll(".btn-edit").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
         e.preventDefault();
         const adId = btn.dataset.id;
         window.location.href = `/marketplace/edit/${adId}`;
       });
     });
-    
-    myAdsGrid.querySelectorAll('.btn-deactivate').forEach(btn => {
-      btn.addEventListener('click', async (e) => {
+
+    myAdsGrid.querySelectorAll(".btn-deactivate").forEach((btn) => {
+      btn.addEventListener("click", async (e) => {
         e.preventDefault();
         const adId = btn.dataset.id;
-        
-        if (!confirm('Вы уверены, что хотите скрыть это объявление? Оно перестанет отображаться в барахолке.')) {
+
+        if (
+          !confirm(
+            "Вы уверены, что хотите скрыть это объявление? Оно перестанет отображаться в барахолке.",
+          )
+        ) {
           return;
         }
-        
+
         try {
-          const response = await fetch(`http://localhost:8000/api/marketplace/ads/${adId}/deactivate/`, {
-            method: 'POST',
-            headers: auth.getAuthHeader(),
-          });
-          
+          const response = await fetch(
+            `http://localhost:8000/api/marketplace/ads/${adId}/deactivate/`,
+            {
+              method: "POST",
+              headers: auth.getAuthHeader(),
+            },
+          );
+
           if (!response.ok) {
             const error = await response.json();
-            throw new Error(error.error || 'Ошибка деактивации');
+            throw new Error(error.error || "Ошибка деактивации");
           }
-          
-          alert('Объявление скрыто');
+
+          alert("Объявление скрыто");
           loadMyAds(); // Перезагружаем список
-          
         } catch (error) {
-          alert(error.message || 'Не удалось скрыть объявление');
+          alert(error.message || "Не удалось скрыть объявление");
         }
       });
     });
-    
-    myAdsGrid.querySelectorAll('.btn-delete').forEach(btn => {
-      btn.addEventListener('click', async (e) => {
+
+    myAdsGrid.querySelectorAll(".btn-delete").forEach((btn) => {
+      btn.addEventListener("click", async (e) => {
         e.preventDefault();
         const adId = btn.dataset.id;
         const adTitle = btn.dataset.title;
-        
-        if (!confirm(`Вы уверены, что хотите удалить объявление "${adTitle}"? Это действие нельзя отменить.`)) {
+
+        if (
+          !confirm(
+            `Вы уверены, что хотите удалить объявление "${adTitle}"? Это действие нельзя отменить.`,
+          )
+        ) {
           return;
         }
-        
+
         try {
-          const response = await fetch(`http://localhost:8000/api/marketplace/ads/${adId}/`, {
-            method: 'DELETE',
-            headers: auth.getAuthHeader(),
-          });
-          
+          const response = await fetch(
+            `http://localhost:8000/api/marketplace/ads/${adId}/`,
+            {
+              method: "DELETE",
+              headers: auth.getAuthHeader(),
+            },
+          );
+
           if (!response.ok) {
             const error = await response.json();
-            throw new Error(error.error || 'Ошибка удаления');
+            throw new Error(error.error || "Ошибка удаления");
           }
-          
-          alert('Объявление удалено');
+
+          alert("Объявление удалено");
           loadMyAds(); // Перезагружаем список
-          
         } catch (error) {
-          alert(error.message || 'Не удалось удалить объявление');
+          alert(error.message || "Не удалось удалить объявление");
         }
       });
     });
   }
-  
+
   function createMyAdCard(ad) {
     const adTypeBadges = {
-      'sale': 'Продам',
-      'buy': 'Куплю',
-      'rent': 'Сдам',
-      'free': 'Отдам'
+      sale: "Продам",
+      buy: "Куплю",
+      rent: "Сдам",
+      free: "Отдам",
     };
-    
+
     const moderationStatus = {
-      'pending': 'На модерации',
-      'approved': 'Одобрено',
-      'rejected': 'Отклонено'
+      pending: "На модерации",
+      approved: "Одобрено",
+      rejected: "Отклонено",
     };
-    
+
     const statusColors = {
-      'pending': '#ffc107',
-      'approved': '#28a745',
-      'rejected': '#dc3545'
+      pending: "#ffc107",
+      approved: "#28a745",
+      rejected: "#dc3545",
     };
-    
+
     // Определяем, нужно ли показывать кнопку редактирования
-    const showEditButton = ad.moderation_status === 'rejected' || ad.moderation_status === 'pending' || ad.is_active;
-    
+    const showEditButton =
+      ad.moderation_status === "rejected" ||
+      ad.moderation_status === "pending" ||
+      ad.is_active;
+
     return `
       <div class="my-ad-card" data-id="${ad.id}">
-        ${ad.main_image_url ? `
+        ${
+          ad.main_image_url
+            ? `
           <div class="ad-image">
-            <img src="${ad.main_image_url.startsWith('http') ? ad.main_image_url : 'http://localhost:8000' + ad.main_image_url}" alt="${ad.title}" loading="lazy">
+            <img src="${ad.main_image_url.startsWith("http") ? ad.main_image_url : "http://localhost:8000" + ad.main_image_url}" alt="${ad.title}" loading="lazy">
           </div>
-        ` : `
+        `
+            : `
           <div class="ad-image-placeholder">
             <span>📷</span>
           </div>
-        `}
+        `
+        }
         
         <div class="ad-badge ad-badge-${ad.ad_type}">${adTypeBadges[ad.ad_type]}</div>
         
@@ -206,41 +228,53 @@ export async function createMyAdsPage() {
           <h3 class="ad-title">${ad.title}</h3>
           
           <div class="ad-description">
-            ${ad.description.length > 100 ? ad.description.substring(0, 100) + '...' : ad.description}
+            ${ad.description.length > 100 ? ad.description.substring(0, 100) + "..." : ad.description}
           </div>
           
-          ${ad.price !== null ? `
+          ${
+            ad.price !== null
+              ? `
             <div class="ad-price">
-              ${ad.ad_type === 'free' ? 'Бесплатно' : `${ad.price} ₽`}
+              ${ad.ad_type === "free" ? "Бесплатно" : `${ad.price} ₽`}
             </div>
-          ` : ''}
+          `
+              : ""
+          }
           
           <div class="ad-meta">
-            <span class="ad-date">${new Date(ad.created_at).toLocaleDateString('ru-RU')}</span>
+            <span class="ad-date">${new Date(ad.created_at).toLocaleDateString("ru-RU")}</span>
             <span class="ad-views">👁️ ${ad.views}</span>
           </div>
           
-          <div class="ad-moderation-status" style="color: ${statusColors[ad.moderation_status]}; margin: 10px 0; padding: 8px; background: rgba(${statusColors[ad.moderation_status] === '#28a745' ? '40,167,69' : statusColors[ad.moderation_status] === '#ffc107' ? '255,193,7' : '220,53,69'}, 0.1); border-radius: 6px; font-size: 0.95rem;" data-status="${ad.moderation_status}">
+          <div class="ad-moderation-status" style="color: ${statusColors[ad.moderation_status]}; margin: 10px 0; padding: 8px; background: rgba(${statusColors[ad.moderation_status] === "#28a745" ? "40,167,69" : statusColors[ad.moderation_status] === "#ffc107" ? "255,193,7" : "220,53,69"}, 0.1); border-radius: 6px; font-size: 0.95rem;" data-status="${ad.moderation_status}">
             <strong>Статус:</strong> ${moderationStatus[ad.moderation_status]}
-            ${ad.moderation_comment ? `<br><small style="color: ${statusColors[ad.moderation_status]};">💬 ${ad.moderation_comment}</small>` : ''}
+            ${ad.moderation_comment ? `<br><small style="color: ${statusColors[ad.moderation_status]};">💬 ${ad.moderation_comment}</small>` : ""}
           </div>
           
           <div class="ad-actions">
-            ${showEditButton ? `
+            ${
+              showEditButton
+                ? `
               <button class="btn-edit" data-id="${ad.id}" title="Редактировать объявление">
                 <span>✏️</span> Редактировать
               </button>
-            ` : ''}
+            `
+                : ""
+            }
             
-            ${ad.is_active ? `
+            ${
+              ad.is_active
+                ? `
               <button class="btn-deactivate" data-id="${ad.id}" title="Скрыть объявление">
                 <span>🙈</span> Скрыть
               </button>
-            ` : `
+            `
+                : `
               <button class="btn-disabled" disabled>
                 <span>🙈</span> Скрыто
               </button>
-            `}
+            `
+            }
             
             <button class="btn-delete" data-id="${ad.id}" data-title="${ad.title}" title="Удалить объявление навсегда">
               <span>🗑️</span> Удалить
@@ -250,6 +284,6 @@ export async function createMyAdsPage() {
       </div>
     `;
   }
-  
+
   return page;
 }

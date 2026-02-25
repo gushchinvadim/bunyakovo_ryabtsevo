@@ -18,7 +18,7 @@ cd backend
 source ../.venv/bin/activate
 python manage.py migrate --noinput
 python manage.py collectstatic --noinput
-
+chmod -R o+rX /home/deploy/bunyakovo_ryabtsevo/bunyakovo_ryabtsevo/backend/staticfiles/
 # 3. Фронтенд: сборка через Yarn
 echo "🎨 Building frontend..."
 cd ../frontend
@@ -32,3 +32,4 @@ sudo systemctl restart gunicorn-bunyakovo
 sudo systemctl restart nginx
 
 echo "✅ Деплой завершён успешно!"
+

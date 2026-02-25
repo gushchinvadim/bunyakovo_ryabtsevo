@@ -1,10 +1,10 @@
 // src/js/components/CreateAdPage.js
-import { auth } from '../utils/auth.js';
+import { auth } from "../utils/auth.js";
 
 export function createCreateAdPage() {
-  const page = document.createElement('div');
-  page.className = 'create-ad-page';
-  
+  const page = document.createElement("div");
+  page.className = "create-ad-page";
+
   // Проверка авторизации
   if (!auth.isLoggedIn()) {
     page.innerHTML = `
@@ -20,7 +20,7 @@ export function createCreateAdPage() {
     `;
     return page;
   }
-  
+
   page.innerHTML = `
     <div class="page-header">
       <h1 class="page-title">Разместить объявление</h1>
@@ -171,53 +171,53 @@ export function createCreateAdPage() {
       <div class="create-ad-message" id="createAdMessage" style="display:none"></div>
     </div>
   `;
-  
-  const createAdForm = page.querySelector('#createAdForm');
-  const adTypeSelect = page.querySelector('#ad_type');
-  const priceGroup = page.querySelector('#priceGroup');
-  const priceInput = page.querySelector('#price');
-  const villageSelect = page.querySelector('#village');
-  const phoneInput = page.querySelector('#phone');
-  const emailInput = page.querySelector('#email');
-  const imagesInput = page.querySelector('#images');
-  const imagePreview = page.querySelector('#imagePreview');
-  const createAdMessage = page.querySelector('#createAdMessage');
-  
+
+  const createAdForm = page.querySelector("#createAdForm");
+  const adTypeSelect = page.querySelector("#ad_type");
+  const priceGroup = page.querySelector("#priceGroup");
+  const priceInput = page.querySelector("#price");
+  const villageSelect = page.querySelector("#village");
+  const phoneInput = page.querySelector("#phone");
+  const emailInput = page.querySelector("#email");
+  const imagesInput = page.querySelector("#images");
+  const imagePreview = page.querySelector("#imagePreview");
+  const createAdMessage = page.querySelector("#createAdMessage");
+
   // Показ/скрытие поля цены в зависимости от типа объявления
-  adTypeSelect.addEventListener('change', () => {
-    if (adTypeSelect.value === 'free') {
-      priceGroup.style.display = 'none';
+  adTypeSelect.addEventListener("change", () => {
+    if (adTypeSelect.value === "free") {
+      priceGroup.style.display = "none";
       priceInput.required = false;
-      priceInput.value = '';
-    } else if (adTypeSelect.value === 'buy') {
-      priceGroup.style.display = 'none';
+      priceInput.value = "";
+    } else if (adTypeSelect.value === "buy") {
+      priceGroup.style.display = "none";
       priceInput.required = false;
     } else {
-      priceGroup.style.display = 'block';
+      priceGroup.style.display = "block";
       priceInput.required = true;
     }
   });
-  
+
   // Предпросмотр изображений
-  imagesInput.addEventListener('change', () => {
-    imagePreview.innerHTML = '';
-    
+  imagesInput.addEventListener("change", () => {
+    imagePreview.innerHTML = "";
+
     if (imagesInput.files.length > 3) {
-      showMessage('Можно загрузить максимум 3 изображения', 'error');
-      imagesInput.value = '';
+      showMessage("Можно загрузить максимум 3 изображения", "error");
+      imagesInput.value = "";
       return;
     }
-    
-    Array.from(imagesInput.files).forEach(file => {
+
+    Array.from(imagesInput.files).forEach((file) => {
       if (file.size > 5 * 1024 * 1024) {
-        showMessage(`Файл ${file.name} превышает 5 МБ`, 'error');
+        showMessage(`Файл ${file.name} превышает 5 МБ`, "error");
         return;
       }
-      
+
       const reader = new FileReader();
       reader.onload = (e) => {
-        const imgWrapper = document.createElement('div');
-        imgWrapper.className = 'preview-image';
+        const imgWrapper = document.createElement("div");
+        imgWrapper.className = "preview-image";
         imgWrapper.innerHTML = `
           <img src="${e.target.result}" alt="Preview">
           <span class="remove-image" data-file="${file.name}">&times;</span>
@@ -228,125 +228,137 @@ export function createCreateAdPage() {
       reader.readAsDataURL(file);
     });
   });
-  
+
   // Удаление изображения из предпросмотра
-  imagePreview.addEventListener('click', (e) => {
-    if (e.target.classList.contains('remove-image')) {
+  imagePreview.addEventListener("click", (e) => {
+    if (e.target.classList.contains("remove-image")) {
       const fileName = e.target.dataset.file;
       const files = Array.from(imagesInput.files);
-      const filteredFiles = files.filter(f => f.name !== fileName);
-      
+      const filteredFiles = files.filter((f) => f.name !== fileName);
+
       const dataTransfer = new DataTransfer();
-      filteredFiles.forEach(file => dataTransfer.items.add(file));
+      filteredFiles.forEach((file) => dataTransfer.items.add(file));
       imagesInput.files = dataTransfer.files;
-      
+
       e.target.parentElement.remove();
     }
   });
-  
+
   // Отправка формы
-  createAdForm.addEventListener('submit', async (e) => {
+  createAdForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    
+
     // Валидация цены
-    if (adTypeSelect.value !== 'free' && adTypeSelect.value !== 'buy' && !priceInput.value) {
-      showMessage('Укажите цену для этого типа объявления', 'error');
+    if (
+      adTypeSelect.value !== "free" &&
+      adTypeSelect.value !== "buy" &&
+      !priceInput.value
+    ) {
+      showMessage("Укажите цену для этого типа объявления", "error");
       return;
     }
-    
-    showMessage('Публикация объявления...', 'info');
-    
+
+    showMessage("Публикация объявления...", "info");
+
     try {
       const formData = new FormData();
-      formData.append('title', createAdForm.title.value.trim());
-      formData.append('description', createAdForm.description.value.trim());
-      formData.append('ad_type', adTypeSelect.value);
-      formData.append('village', villageSelect.value);
-      
-      if (priceInput.value && adTypeSelect.value !== 'free') {
-        formData.append('price', priceInput.value);
+      formData.append("title", createAdForm.title.value.trim());
+      formData.append("description", createAdForm.description.value.trim());
+      formData.append("ad_type", adTypeSelect.value);
+      formData.append("village", villageSelect.value);
+
+      if (priceInput.value && adTypeSelect.value !== "free") {
+        formData.append("price", priceInput.value);
       }
-      
-      formData.append('phone', phoneInput.value.trim());
-      formData.append('email', emailInput.value.trim());
-      
+
+      formData.append("phone", phoneInput.value.trim());
+      formData.append("email", emailInput.value.trim());
+
       if (createAdForm.address.value) {
-        formData.append('address', createAdForm.address.value.trim());
+        formData.append("address", createAdForm.address.value.trim());
       }
-      
+
       // Добавляем изображения
       if (imagesInput.files.length > 0) {
         Array.from(imagesInput.files).forEach((file, index) => {
-          formData.append('images', file);
+          formData.append("images", file);
         });
       }
-      
-      const response = await fetch('http://localhost:8000/api/marketplace/ads/', {
-        method: 'POST',
-        headers: {
-          ...auth.getAuthHeader(),
+
+      const response = await fetch(
+        "http://localhost:8000/api/marketplace/ads/",
+        {
+          method: "POST",
+          headers: {
+            ...auth.getAuthHeader(),
+          },
+          body: formData,
         },
-        body: formData,
-      });
-      
+      );
+
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.detail || error.error || 'Ошибка публикации объявления');
+        throw new Error(
+          error.detail || error.error || "Ошибка публикации объявления",
+        );
       }
-      
-      showMessage('Объявление успешно опубликовано! Ожидайте модерации.', 'success');
-      
+
+      showMessage(
+        "Объявление успешно опубликовано! Ожидайте модерации.",
+        "success",
+      );
+
       // Очищаем форму
       createAdForm.reset();
-      imagePreview.innerHTML = '';
-      
+      imagePreview.innerHTML = "";
+
       // Через 2 секунды перенаправляем на барахолку
       setTimeout(() => {
-        window.location.href = '/marketplace';
+        window.location.href = "/marketplace";
       }, 2000);
-      
     } catch (error) {
-      showMessage(error.message || 'Ошибка публикации', 'error');
+      showMessage(error.message || "Ошибка публикации", "error");
     }
   });
-  
+
   function showMessage(text, type) {
     createAdMessage.textContent = text;
-    createAdMessage.style.display = 'block';
+    createAdMessage.style.display = "block";
     createAdMessage.className = `create-ad-message ${type}`;
   }
-  
+
   // 🔑 КЛЮЧЕВОЕ ДОБАВЛЕНИЕ: автозаполнение полей из профиля
   async function autoFillProfileData() {
     try {
       // Сначала пытаемся получить свежие данные из API
       const profile = await auth.getProfile();
-      
+
       if (profile) {
         // Заполняем поля, если они не пустые
-        if (profile.village && villageSelect.value === '') {
+        if (profile.village && villageSelect.value === "") {
           villageSelect.value = profile.village;
-          page.querySelector('#village + .profile-hint').style.display = 'block';
+          page.querySelector("#village + .profile-hint").style.display =
+            "block";
         }
-        
-        if (profile.phone && phoneInput.value === '') {
+
+        if (profile.phone && phoneInput.value === "") {
           phoneInput.value = profile.phone;
-          page.querySelector('#phone + .profile-hint').style.display = 'block';
+          page.querySelector("#phone + .profile-hint").style.display = "block";
         }
-        
-        if (profile.email && emailInput.value === '') {
+
+        if (profile.email && emailInput.value === "") {
           emailInput.value = profile.email;
-          page.querySelector('#email + .profile-hint').style.display = 'block';
+          page.querySelector("#email + .profile-hint").style.display = "block";
         }
       }
     } catch (error) {
-      console.warn('Не удалось загрузить профиль для автозаполнения:', error);
+      console.warn("Не удалось загрузить профиль для автозаполнения:", error);
       // Не показываем ошибку пользователю — поля останутся пустыми
     }
   }
-  
+
   // Запускаем автозаполнение после рендеринга формы
   setTimeout(autoFillProfileData, 100);
-  
+
   return page;
 }

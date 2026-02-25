@@ -12,103 +12,111 @@ export async function createGalleryPage() {
     return villages[code] || code;
   }
 
-// Функция рендеринга галереи с кнопками "Посмотреть/Смотреть"
-function renderGallery(items, filter) {
-  const galleryGrid = page.querySelector(".gallery-grid");
-  galleryGrid.innerHTML = "";
+  // Функция рендеринга галереи с кнопками "Посмотреть/Смотреть"
+  function renderGallery(items, filter) {
+    const galleryGrid = page.querySelector(".gallery-grid");
+    galleryGrid.innerHTML = "";
 
-  // Фильтрация
-  let filteredItems = items;
+    // Фильтрация
+    let filteredItems = items;
 
-  if (filter === "photo") {
-    filteredItems = items.filter((item) => item.media_type === "photo");
-  } else if (filter === "video") {
-    filteredItems = items.filter((item) => item.media_type === "video");
-  } else if (filter === "bunyakovo") {
-    filteredItems = items.filter((item) => item.village === "bunyakovo");
-  } else if (filter === "ryabtsevo") {
-    filteredItems = items.filter((item) => item.village === "ryabtsevo");
-  }
+    if (filter === "photo") {
+      filteredItems = items.filter((item) => item.media_type === "photo");
+    } else if (filter === "video") {
+      filteredItems = items.filter((item) => item.media_type === "video");
+    } else if (filter === "bunyakovo") {
+      filteredItems = items.filter((item) => item.village === "bunyakovo");
+    } else if (filter === "ryabtsevo") {
+      filteredItems = items.filter((item) => item.village === "ryabtsevo");
+    }
 
-  if (filteredItems.length === 0) {
-    galleryGrid.innerHTML = `
+    if (filteredItems.length === 0) {
+      galleryGrid.innerHTML = `
       <div class="gallery-empty">
         <p>Медиа по выбранному фильтру не найдено</p>
         <button class="btn-reset" onclick="location.reload()">Обновить</button>
       </div>
     `;
-    return;
-  }
+      return;
+    }
 
-  // Рендерим элементы
-  filteredItems.forEach((item) => {
-    const itemEl = document.createElement("div");
-    itemEl.className = `gallery-item gallery-item--${item.media_type}`;
+    // Рендерим элементы
+    filteredItems.forEach((item) => {
+      const itemEl = document.createElement("div");
+      itemEl.className = `gallery-item gallery-item--${item.media_type}`;
 
-    // Форматируем дату
-    const date = item.uploaded_at
-      ? new Date(item.uploaded_at).toLocaleDateString('ru-RU', {
-          day: 'numeric',
-          month: 'long',
-          year: 'numeric'
-        })
-      : 'Дата не указана';
+      // Форматируем дату
+      const date = item.uploaded_at
+        ? new Date(item.uploaded_at).toLocaleDateString("ru-RU", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          })
+        : "Дата не указана";
 
-    if (item.media_type === "photo") {
-      itemEl.innerHTML = `
+      if (item.media_type === "photo") {
+        itemEl.innerHTML = `
         <div class="gallery-item-inner">
           <img 
             src="${item.file_url}" 
             alt="${item.title}" 
             loading="lazy"
             class="gallery-img"
-            onclick="openGalleryModal('${item.file_url.replace(/'/g, "\\'")}', '${item.title.replace(/'/g, "\\'")}', '${(item.description || '').replace(/'/g, "\\'")}')"
+            onclick="openGalleryModal('${item.file_url.replace(/'/g, "\\'")}', '${item.title.replace(/'/g, "\\'")}', '${(item.description || "").replace(/'/g, "\\'")}')"
           >
           <div class="gallery-item-overlay">
             <div class="gallery-item-info">
-              <h4>${item.title || 'Фотография'}</h4>
+              <h4>${item.title || "Фотография"}</h4>
               <p class="gallery-item-date">${date}</p>
               <span class="gallery-village">${getVillageName(item.village)}</span>
             </div>
-            <button class="gallery-item-btn" onclick="openGalleryModal('${item.file_url.replace(/'/g, "\\'")}', '${item.title.replace(/'/g, "\\'")}', '${(item.description || '').replace(/'/g, "\\'")}'); event.stopPropagation();">
+            <button class="gallery-item-btn" onclick="openGalleryModal('${item.file_url.replace(/'/g, "\\'")}', '${item.title.replace(/'/g, "\\'")}', '${(item.description || "").replace(/'/g, "\\'")}'); event.stopPropagation();">
               👁️ Посмотреть
             </button>
           </div>
         </div>
       `;
-    } else if (item.media_type === "video") {
-      itemEl.innerHTML = `
+      } else if (item.media_type === "video") {
+        itemEl.innerHTML = `
         <div class="gallery-item-inner">
           <div class="video-container">
-            ${item.thumbnail_url ? `
+            ${
+              item.thumbnail_url
+                ? `
               <img src="${item.thumbnail_url}" alt="${item.title}" class="video-thumbnail">
-            ` : `<div class="video-placeholder">Видео</div>`}
-            <button class="play-button" onclick="openVideoModal('${item.file_url.replace(/'/g, "\\'")}', '${item.title.replace(/'/g, "\\'")}', '${(item.description || '').replace(/'/g, "\\'")}'); event.stopPropagation();">
+            `
+                : `<div class="video-placeholder">Видео</div>`
+            }
+            <button class="play-button" onclick="openVideoModal('${item.file_url.replace(/'/g, "\\'")}', '${item.title.replace(/'/g, "\\'")}', '${(item.description || "").replace(/'/g, "\\'")}'); event.stopPropagation();">
               ▶️
             </button>
           </div>
           <div class="gallery-item-overlay">
             <div class="gallery-item-info">
-              <h4>${item.title || 'Видео'}</h4>
+              <h4>${item.title || "Видео"}</h4>
               <p class="gallery-item-date">${date}</p>
               <span class="gallery-village">${getVillageName(item.village)}</span>
             </div>
-            <button class="gallery-item-btn" onclick="openVideoModal('${item.file_url.replace(/'/g, "\\'")}', '${item.title.replace(/'/g, "\\'")}', '${(item.description || '').replace(/'/g, "\\'")}'); event.stopPropagation();">
+            <button class="gallery-item-btn" onclick="openVideoModal('${item.file_url.replace(/'/g, "\\'")}', '${item.title.replace(/'/g, "\\'")}', '${(item.description || "").replace(/'/g, "\\'")}'); event.stopPropagation();">
               🎥 Смотреть
             </button>
           </div>
         </div>
-        ${item.description ? `
+        ${
+          item.description
+            ? `
           <div class="gallery-item-description">
             <p>${item.description}</p>
           </div>
-        ` : ''}
+        `
+            : ""
+        }
       `;
-    }
+      }
 
-    galleryGrid.appendChild(itemEl);
-  });
-}
+      galleryGrid.appendChild(itemEl);
+    });
+  }
 
   // Заголовок страницы
   page.innerHTML = `
@@ -181,101 +189,113 @@ function renderGallery(items, filter) {
 // Создание карточки медиа для галереи "О нас"
 function createMediaCard(media) {
   const date = media.uploaded_at
-    ? new Date(media.uploaded_at).toLocaleDateString('ru-RU', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
+    ? new Date(media.uploaded_at).toLocaleDateString("ru-RU", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
       })
-    : 'Дата не указана';
-  
-  if (media.media_type === 'photo') {
+    : "Дата не указана";
+
+  if (media.media_type === "photo") {
     return `
       <div class="gallery-item photo-item">
         <div class="gallery-item-inner">
           <img src="${media.file_url}" alt="${media.title}" 
-               onclick="openGalleryModal('${media.file_url}', '${media.title}', '${media.description || ''}')"
+               onclick="openGalleryModal('${media.file_url}', '${media.title}', '${media.description || ""}')"
                onerror="this.parentElement.style.display='none'">
           <div class="gallery-item-overlay">
             <div class="gallery-item-info">
-              <h4>${media.title || 'Фотография'}</h4>
+              <h4>${media.title || "Фотография"}</h4>
               <p class="gallery-item-date">${date}</p>
             </div>
-            <button class="gallery-item-btn" onclick="openGalleryModal('${media.file_url}', '${media.title}', '${media.description || ''}'); event.stopPropagation();">
+            <button class="gallery-item-btn" onclick="openGalleryModal('${media.file_url}', '${media.title}', '${media.description || ""}'); event.stopPropagation();">
               👁️ Посмотреть
             </button>
           </div>
         </div>
-        ${media.description ? `
+        ${
+          media.description
+            ? `
           <div class="gallery-item-description">
             <p>${media.description}</p>
           </div>
-        ` : ''}
+        `
+            : ""
+        }
       </div>
     `;
-  } else if (media.media_type === 'video') {
+  } else if (media.media_type === "video") {
     return `
       <div class="gallery-item video-item">
         <div class="gallery-item-inner">
           <div class="video-container">
-            ${media.thumbnail_url ? `
+            ${
+              media.thumbnail_url
+                ? `
               <img src="${media.thumbnail_url}" alt="${media.title}" class="video-thumbnail">
-            ` : ''}
-            <button class="play-button" onclick="openVideoModal('${media.file_url}', '${media.title}', '${media.description || ''}'); event.stopPropagation();">
+            `
+                : ""
+            }
+            <button class="play-button" onclick="openVideoModal('${media.file_url}', '${media.title}', '${media.description || ""}'); event.stopPropagation();">
               ▶️
             </button>
           </div>
           <div class="gallery-item-overlay">
             <div class="gallery-item-info">
-              <h4>${media.title || 'Видео'}</h4>
+              <h4>${media.title || "Видео"}</h4>
               <p class="gallery-item-date">${date}</p>
             </div>
-            <button class="gallery-item-btn" onclick="openVideoModal('${media.file_url}', '${media.title}', '${media.description || ''}'); event.stopPropagation();">
+            <button class="gallery-item-btn" onclick="openVideoModal('${media.file_url}', '${media.title}', '${media.description || ""}'); event.stopPropagation();">
               🎥 Смотреть
             </button>
           </div>
         </div>
-        ${media.description ? `
+        ${
+          media.description
+            ? `
           <div class="gallery-item-description">
             <p>${media.description}</p>
           </div>
-        ` : ''}
+        `
+            : ""
+        }
       </div>
     `;
   }
-  
-  return '';
+
+  return "";
 }
 
 // Функции для модальных окон (добавим в глобальную область)
-window.openGalleryModal = function(imageUrl, title, description) {
-  const modal = document.createElement('div');
-  modal.className = 'gallery-modal';
+window.openGalleryModal = function (imageUrl, title, description) {
+  const modal = document.createElement("div");
+  modal.className = "gallery-modal";
   modal.innerHTML = `
     <div class="gallery-modal-content">
       <button class="gallery-modal-close">&times;</button>
       <h2>${title}</h2>
       <img src="${imageUrl}" alt="${title}">
-      ${description ? `<p class="modal-description">${description}</p>` : ''}
+      ${description ? `<p class="modal-description">${description}</p>` : ""}
     </div>
   `;
-  
+
   document.body.appendChild(modal);
-  
+
   // Закрытие модалки
-  modal.querySelector('.gallery-modal-close').addEventListener('click', () => {
+  modal.querySelector(".gallery-modal-close").addEventListener("click", () => {
     modal.remove();
   });
-  
-  modal.addEventListener('click', (e) => {
+
+  modal.addEventListener("click", (e) => {
     if (e.target === modal) {
       modal.remove();
     }
   });
 };
 
-window.openVideoModal = function(videoUrl, title, description) {
-  const modal = document.createElement('div');
-  modal.className = 'gallery-modal';
+window.openVideoModal = function (videoUrl, title, description) {
+  const modal = document.createElement("div");
+  modal.className = "gallery-modal";
   modal.innerHTML = `
     <div class="gallery-modal-content video-modal">
       <button class="gallery-modal-close">&times;</button>
@@ -284,18 +304,18 @@ window.openVideoModal = function(videoUrl, title, description) {
         <source src="${videoUrl}" type="video/mp4">
         Ваш браузер не поддерживает видео.
       </video>
-      ${description ? `<p class="modal-description">${description}</p>` : ''}
+      ${description ? `<p class="modal-description">${description}</p>` : ""}
     </div>
   `;
-  
+
   document.body.appendChild(modal);
-  
+
   // Закрытие модалки
-  modal.querySelector('.gallery-modal-close').addEventListener('click', () => {
+  modal.querySelector(".gallery-modal-close").addEventListener("click", () => {
     modal.remove();
   });
-  
-  modal.addEventListener('click', (e) => {
+
+  modal.addEventListener("click", (e) => {
     if (e.target === modal) {
       modal.remove();
     }

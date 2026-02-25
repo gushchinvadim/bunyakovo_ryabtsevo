@@ -6,11 +6,11 @@ import { auth } from "../utils/auth.js";
 export function createHeader() {
   const header = document.createElement("header");
   header.className = "site-header";
-  
+
   // Получаем данные пользователя
   const user = auth.getUser();
   const isLoggedIn = auth.isLoggedIn();
-  
+
   // Формируем пункты меню
   const menuItems = [
     { href: "/", text: "Главная" },
@@ -19,28 +19,30 @@ export function createHeader() {
     { href: "/marketplace", text: "Барахолка" },
     { href: "/church", text: "Покровская церковь" },
   ];
-  
+
   // Добавляем пункт авторизации ВНУТРЬ меню
   if (isLoggedIn) {
     menuItems.push({
       href: "#logout",
       text: `${user.first_name || user.username} [выйти]`,
       className: "menu-user",
-      isLogout: true
+      isLogout: true,
     });
   } else {
     menuItems.push({
       href: "/login",
       text: "Войти",
-      className: "menu-login"
+      className: "menu-login",
     });
   }
 
   // Формируем HTML для пунктов меню
-  const menuItemsHtml = menuItems.map(item => {
-    const classes = item.className ? ` class="${item.className}"` : '';
-    return `<li${classes}><a href="${item.href}">${item.text}</a></li>`;
-  }).join('');
+  const menuItemsHtml = menuItems
+    .map((item) => {
+      const classes = item.className ? ` class="${item.className}"` : "";
+      return `<li${classes}><a href="${item.href}">${item.text}</a></li>`;
+    })
+    .join("");
 
   header.innerHTML = `
     <div class="header-container">
@@ -81,15 +83,15 @@ export function createHeader() {
   nav.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", (e) => {
       // Обработка выхода
-      if (link.getAttribute('href') === '#logout') {
+      if (link.getAttribute("href") === "#logout") {
         e.preventDefault();
-        if (confirm('Вы уверены, что хотите выйти из системы?')) {
+        if (confirm("Вы уверены, что хотите выйти из системы?")) {
           auth.logout();
-          window.location.href = '/marketplace';
+          window.location.href = "/marketplace";
         }
         return;
       }
-      
+
       // Закрываем меню для всех остальных ссылок
       burgerBtn.setAttribute("aria-expanded", "false");
       burgerBtn.classList.remove("active");
