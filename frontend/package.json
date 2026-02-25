@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack serve --config webpack.dev.js",
-    "build": "webpack --mode production",
+     "build": "webpack --config webpack.prod.js",
     "dev": "webpack serve --mode development",
     "minify:css": "clean-css -o src/css/style.min.css src/css/style.css",
     "build:all": "yarn build",
