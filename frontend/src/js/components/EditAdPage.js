@@ -1,5 +1,6 @@
 // src/js/components/EditAdPage.js
 import { auth } from "../utils/auth.js";
+import { CONFIG } from "../../config.js";
 
 export async function createEditAdPage(adId) {
   const page = document.createElement("div");
@@ -183,7 +184,7 @@ export async function createEditAdPage(adId) {
   // Загружаем данные объявления
   try {
     const response = await fetch(
-      `http://localhost:8000/api/marketplace/ads/${adId}/`,
+      `${CONFIG.API_URL}/marketplace/ads/${adId}/`,
       {
         headers: auth.getAuthHeader(),
       },
@@ -360,7 +361,7 @@ export async function createEditAdPage(adId) {
         }
 
         const response = await fetch(
-          `http://localhost:8000/api/marketplace/ads/${adId}/`,
+          `${CONFIG.API_URL}/marketplace/ads/${adId}/`,
           {
             method: "PUT",
             headers: {

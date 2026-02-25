@@ -1,5 +1,6 @@
 // src/js/components/MyAdsPage.js
 import { auth } from "../utils/auth.js";
+import { CONFIG } from "../../config.js";
 
 export async function createMyAdsPage() {
   const page = document.createElement("div");
@@ -62,7 +63,7 @@ export async function createMyAdsPage() {
 
     try {
       const response = await fetch(
-        "http://localhost:8000/api/marketplace/ads/my_ads/",
+        `${CONFIG.API_URL}/marketplace/ads/my_ads/`,
         {
           headers: auth.getAuthHeader(),
         },
@@ -123,7 +124,7 @@ export async function createMyAdsPage() {
 
         try {
           const response = await fetch(
-            `http://localhost:8000/api/marketplace/ads/${adId}/deactivate/`,
+            `${CONFIG.API_URL}/marketplace/ads/${adId}/deactivate/`,
             {
               method: "POST",
               headers: auth.getAuthHeader(),
@@ -159,7 +160,7 @@ export async function createMyAdsPage() {
 
         try {
           const response = await fetch(
-            `http://localhost:8000/api/marketplace/ads/${adId}/`,
+            `${CONFIG.API_URL}/marketplace/ads/${adId}/`,
             {
               method: "DELETE",
               headers: auth.getAuthHeader(),

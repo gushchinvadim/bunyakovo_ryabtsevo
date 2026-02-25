@@ -1,5 +1,5 @@
 // src/js/components/History.js
-import { CONFIG } from "/src/config.js";
+import { CONFIG } from "../../config.js";
 
 export function createHistoryPage() {
   const page = document.createElement("div");

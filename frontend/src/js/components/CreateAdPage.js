@@ -1,5 +1,6 @@
 // src/js/components/CreateAdPage.js
 import { auth } from "../utils/auth.js";
+import { CONFIG } from "../../config.js";
 
 export function createCreateAdPage() {
   const page = document.createElement("div");
@@ -286,7 +287,7 @@ export function createCreateAdPage() {
       }
 
       const response = await fetch(
-        "http://localhost:8000/api/marketplace/ads/",
+        `${CONFIG.API_URL}/marketplace/ads/`,
         {
           method: "POST",
           headers: {

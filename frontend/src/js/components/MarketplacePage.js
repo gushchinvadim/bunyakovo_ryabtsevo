@@ -1,5 +1,6 @@
 // src/js/components/MarketplacePage.js
 import { auth } from "../utils/auth.js";
+import { CONFIG } from "../../config.js";
 
 export async function createMarketplacePage() {
   const page = document.createElement("div");
@@ -93,7 +94,7 @@ export async function createMarketplacePage() {
     errorEl.style.display = "none";
 
     try {
-      let url = "http://localhost:8000/api/marketplace/ads/";
+      let url = `${CONFIG.API_URL}/marketplace/ads/`;
 
       // Добавляем фильтры к URL
       const params = new URLSearchParams();
@@ -227,7 +228,7 @@ export async function createMarketplacePage() {
   async function showAdDetails(adId) {
     try {
       const response = await fetch(
-        `http://localhost:8000/api/marketplace/ads/${adId}/`,
+        `${CONFIG.API_URL}/marketplace/ads/${adId}/`,
       );
 
       if (!response.ok) {
