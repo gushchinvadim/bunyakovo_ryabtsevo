@@ -6,49 +6,10 @@ export function createMainContent() {
   main.className = "main-content";
 
   // Исправленный код информера БЕЗ инлайн-стилей
-  const weatherHTML = `
-    <div id="gsInformerID-VNKIQvtnHEpVvB" class="gsInformer">
-      <div class="gsIContent">
-        <div id="cityLink">
-          <a href="https://www.gismeteo.ru/weather-domodedovo-4369/" target="_blank" title="Погода в Домодедово">
-            <img src="https://nst1.gismeteo.ru/assets/flat-ui/img/gisloader.svg" width="24" height="24" alt="Погода в Домодедово">
-          </a>
-        </div>
-        <div class="gsLinks">
-          <table>
-            <tr>
-              <td>
-                <div class="leftCol">
-                  <a href="https://www.gismeteo.ru/" target="_blank" title="Погода">
-                    <img alt="Погода" src="https://nst1.gismeteo.ru/assets/flat-ui/img/logo-mini2.png" align="middle" border="0" width="11" height="16" />
-                    <img src="https://nst1.gismeteo.ru/assets/flat-ui/img/informer/gismeteo.svg" border="0" align="middle" style="left:5px;top:1px">
-                  </a>
-                </div>
-                <div class="rightCol">
-                  <a href="https://www.gismeteo.ru/weather-domodedovo-4369/2-weeks/" target="_blank" title="Погода в Домодедово на 2 недели">
-                    <img src="https://nst1.gismeteo.ru/assets/flat-ui/img/informer/forecast-2weeks.ru.svg" border="0" align="middle" style="top:auto" alt="Погода в Домодедово на 2 недели">
-                  </a>
-                </div>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
-    </div>
-  `;
 
   main.innerHTML = `
     <div class="content-grid">
-      <!-- Погода -->
-      <section class="card weather-card">
-        <div class="card-header">
-          <h2 class="card-title">🌤️ Погода</h2>
-          <div class="card-badge">Домодедово</div>
-        </div>
-        <div class="card-content weather-content">
-          ${weatherHTML}
-        </div>
-      </section>
+
       
       <!-- Важная информация -->
       <section class="card important-info-card">
@@ -303,3 +264,45 @@ function createPhonesHTML(phones) {
 
   return html;
 }
+
+// const weatherHTML = `
+//   <div id="gsInformerID-VNKIQvtnHEpVvB" class="gsInformer">
+//     <div class="gsIContent">
+//       <div id="cityLink">
+//         <a href="https://www.gismeteo.ru/weather-domodedovo-4369/" target="_blank" title="Погода в Домодедово">
+//           <img src="https://nst1.gismeteo.ru/assets/flat-ui/img/gisloader.svg" width="24" height="24" alt="Погода в Домодедово">
+//         </a>
+//       </div>
+//       <div class="gsLinks">
+//         <table>
+//           <tr>
+//             <td>
+//               <div class="leftCol">
+//                 <a href="https://www.gismeteo.ru/" target="_blank" title="Погода">
+//                   <img alt="Погода" src="https://nst1.gismeteo.ru/assets/flat-ui/img/logo-mini2.png" align="middle" border="0" width="11" height="16" />
+//                   <img src="https://nst1.gismeteo.ru/assets/flat-ui/img/informer/gismeteo.svg" border="0" align="middle" style="left:5px;top:1px">
+//                 </a>
+//               </div>
+//               <div class="rightCol">
+//                 <a href="https://www.gismeteo.ru/weather-domodedovo-4369/2-weeks/" target="_blank" title="Погода в Домодедово на 2 недели">
+//                   <img src="https://nst1.gismeteo.ru/assets/flat-ui/img/informer/forecast-2weeks.ru.svg" border="0" align="middle" style="top:auto" alt="Погода в Домодедово на 2 недели">
+//                 </a>
+//               </div>
+//             </td>
+//           </tr>
+//         </table>
+//       </div>
+//     </div>
+//   </div>
+// `;
+// Карточка погоды, должна быть первой в сетке.API_URL
+//  <!-- Погода -->
+//       <section class="card weather-card">
+//         <div class="card-header">
+//           <h2 class="card-title">🌤️ Погода</h2>
+//           <div class="card-badge">Домодедово</div>
+//         </div>
+//         <div class="card-content weather-content">
+//           ${weatherHTML}
+//         </div>
+//       </section>
