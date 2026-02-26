@@ -6,7 +6,7 @@
 
 - **Backend:** Python 3.10+, Django 4.x
 - **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
-- **Package Manager:** Bun
+- **Package Manager:** Yarn
 - **Database:** SQLite (dev) / PostgreSQL (prod)
 - **Server:** Gunicorn + Nginx (prod)
 
@@ -33,7 +33,5 @@ bunyakovo_ryabtsevo/
 
 ```bash
 git clone https://github.com/gushchinvadim/bunyakovo_ryabtsevo.git
-cd bunyakovo_ryabtsevo# bunyakovo_ryabtsevo
-# bunyakovo_ryabtsevo
-# bunyakovo_ryabtsevo
-# bunyakovo_ryabtsevo
+
+
