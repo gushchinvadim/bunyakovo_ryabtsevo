@@ -11,7 +11,7 @@ export function createFooter() {
           <li><a href="/about">О нас</a></li>
           <li><a href="/marketplace">Барахолка</a></li>
           <li><a href="/">Главная</a></li>
-          <li><a href="mailto:bunryab@yandex.ru?subject=Информация с сайта Буняково-Рябцево">Обратная связь</a></li>
+          <li><a href="mailto:gushvadim@yandex.ru?subject=Информация с сайта Буняково-Рябцево">Обратная связь</a></li>
         </ul>
       </nav>
       <p class="copyright">&copy; Буняково-Рябцево ${new Date().getFullYear()}</p>
